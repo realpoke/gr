@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'email' => 'Email',
+    'username' => 'Username',
+    'password' => 'Password',
+    'confirm-password' => 'Confirm Password',
+    'agree-terms-and-conditions' => 'Agree to Terms and Conditions',
+    'remember-me' => 'Remember me',
+    'new-password' => 'New Password',
+    'confirm-new-password' => 'Confirm New Password',
+    'current-password' => 'Current Password',
+    'new-password-logout-other-description' => 'After changing your password, you will be logged out of all other devices.',
+    'unverified' => 'Unverified',
+    'verified' => 'Verified',
+    'device' => 'Device',
+    'ip-address' => 'IP Address',
+    'last-active' => 'Last Active',
+    'current' => 'Current',
+    'logged-out' => 'Logged Out',
+    'reset' => 'Reset',
+    'loading' => 'Loading',
+    'logout-other' => 'Logout Other Devices',
+    'two-factor-logout-other-description' => 'After setting up Two-Factor Authentication, you will be logged out of all other devices.',
+    'two-factor-code' => 'Two-Factor Code',
+];
