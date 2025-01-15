@@ -21,7 +21,8 @@
         "livewire/flux-pro": "^1.1",
         "livewire/livewire": "^3.5",
         "pragmarx/google2fa": "^8.0",
-        "resend/resend-php": "^0.15.0"
+        "resend/resend-php": "^0.15.0",
+        "symfony/yaml": "^7.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
