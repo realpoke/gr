@@ -16,10 +16,8 @@ use BaconQrCode\Writer;
 use Flux\Flux;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
-#[On('echo-private:Interface.{user.id},PrivateAccountTwoFactorEvent')]
 class AccountTwoFactorComponent extends Component
 {
     public string $twoFactorSecret = '';
@@ -80,7 +78,7 @@ class AccountTwoFactorComponent extends Component
             $logoutter->handle();
 
             if ($logoutter->failed()) {
-                Flux::toast(__('toast.logout-other-specific-device-failed'));
+                Flux::toast(__('toast.logout-other-devices-failed'));
             }
 
             Flux::toast(__('toast.two-factor-logout-other-devices'));

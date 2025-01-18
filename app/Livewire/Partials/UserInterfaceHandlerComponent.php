@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Partials;
 
-use App\Actions\Auth\User\InvalidateUserAction;
 use App\Models\User;
 use Flux\Flux;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +18,7 @@ class UserInterfaceHandlerComponent extends Component
         if ($event['sessionId'] != Session::getId()) {
             Flux::toast(__('toast.force-logout'));
 
-            return $this->redirectIntended(route('landing.page'), true);
+            return $this->redirectIntended(route('authenticate.page'), true);
         }
     }
 
@@ -27,19 +26,6 @@ class UserInterfaceHandlerComponent extends Component
     public function accountEmailUpdated()
     {
         Flux::toast(__('toast.email-verified'));
-    }
-
-    #[On('echo-private:Interface.{user.id},PrivateAccountLogoutSpecificSessionEvent')]
-    public function logoutMe($event)
-    {
-        if ($event['sessionId'] == Session::getId()) {
-            $logoutter = new InvalidateUserAction;
-            $logoutter->handle();
-
-            Flux::toast(__('toast.force-logout'));
-
-            return $this->redirectIntended(route('landing.page'), true);
-        }
     }
 
     #[On('echo-private:Interface.{user.id},PrivateUsernameChangedEvent')]

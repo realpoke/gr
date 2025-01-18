@@ -22,12 +22,15 @@ class LogoutOtherDevicesAction extends BaseAction
 
         $this->form->validate();
 
-        defer(fn () => broadcast(new PrivateAccountLogoutEvent(Session::getId())));
+        Auth::logoutOtherDevices($this->form->password);
 
-        DB::connection(config('session.connection'))->table(config('session.table', 'sessions'))
-            ->where('user_id', Auth::user()->id)
-            ->where('id', '!=', Session::getId())
-            ->update(['invalidated' => true]);
+        defer(function () {
+            DB::connection(config('session.connection'))->table(config('session.table', 'sessions'))
+                ->where('user_id', Auth::user()->id)
+                ->where('id', '!=', Session::getId())
+                ->delete();
+            broadcast(new PrivateAccountLogoutEvent(Session::getId()));
+        });
 
         return $this->setSuccessful();
     }

@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Middleware\EnsureInvalidSession;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->redirectGuestsTo(fn () => route('authenticate.page'));
         $middleware->redirectUsersTo(fn () => route('landing.page'));
-        $middleware->web(EnsureInvalidSession::class);
+        $middleware->web(AuthenticateSession::class);
         $middleware->trustProxies(at: '127.0.0.1', headers: Request::HEADER_X_FORWARDED_FOR);
     })
     ->withExceptions(function (Exceptions $exceptions) {

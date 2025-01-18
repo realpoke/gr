@@ -33,11 +33,6 @@
                                     <flux:icon.question-mark-circle />
                                 @endif
                                 <flux:text class="flex flex-col lg:flex-row">
-                                    @if ($session->logged_out)
-                                        <span class="lg:hidden block">
-                                            <flux:badge color="red" inset="top right" size="sm">{{ __('label.logged-out') }}</flux:badge>
-                                        </span>
-                                    @endif
                                     @if ($session->is_current_device)
                                         <span class="lg:hidden block">
                                             <flux:badge inset="top right" size="sm">{{ __('label.current') }}</flux:badge>
@@ -51,9 +46,6 @@
                                         {{ $session->agent->browser() ?? __('label.unknown') }}
                                     </span>
                                 </flux:text>
-                                @if ($session->logged_out)
-                                    <flux:badge color="red" class="lg:inline-flex hidden" inset="top bottom" size="sm">{{ __('label.logged-out') }}</flux:badge>
-                                @endif
                                 @if ($session->is_current_device)
                                     <flux:badge class="lg:inline-flex hidden" inset="top bottom" size="sm">{{ __('label.current') }}</flux:badge>
                                 @endif
@@ -67,11 +59,6 @@
                                 </span>
                             </flux:cell>
                             <flux:cell class="md:table-cell hidden">{{ $session->last_active }}</flux:cell>
-                            @if (! $session->is_current_device && !$session->logged_out)
-                                <flux:cell>
-                                    <flux:button wire:click="logoutSpecificDevice('{{ $session->id }}')" variant="ghost" size="sm" icon="arrow-right-start-on-rectangle" inset="top bottom"></flux:button>
-                                </flux:cell>
-                            @endif
                         </flux:row>
                     @endforeach
                 </flux:rows>

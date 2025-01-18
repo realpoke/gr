@@ -3,7 +3,6 @@
 namespace App\Livewire\Setting\Account;
 
 use App\Actions\Auth\User\LogoutOtherDevicesAction;
-use App\Actions\Auth\User\LogoutOtherSpecificDeviceAction;
 use App\Models\User;
 use Flux\Flux;
 use Illuminate\Support\Carbon;
@@ -15,8 +14,6 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-#[On('echo-private:Interface.{user.id},PrivateAccountLogoutEvent')]
-#[On('echo-private:Interface.{user.id},PrivateAccountLogoutSpecificSessionEvent')]
 class AccountLogoutOtherDevicesComponent extends Component
 {
     public AccountLogoutOtherDevicesForm $form;
@@ -35,18 +32,7 @@ class AccountLogoutOtherDevicesComponent extends Component
         Flux::toast(__('toast.logout-other-devices'));
     }
 
-    public function logoutSpecificDevice(string $id)
-    {
-        $logoutter = new LogoutOtherSpecificDeviceAction($this->form, $id);
-        $logoutter->handle();
-
-        if (! $logoutter->successful()) {
-            return;
-        }
-
-        Flux::toast(__('toast.logout-other-specific-device'));
-    }
-
+    #[On('echo-private:Interface.{user.id},PrivateAccountLogoutEvent')]
     #[Computed()]
     public function sessions(): Collection
     {
@@ -66,7 +52,6 @@ class AccountLogoutOtherDevicesComponent extends Component
                 'is_current_device' => $session->id === request()->session()->getId(),
                 'last_active' => Carbon::createFromTimestamp($session->last_activity)->diffForHumans(),
                 'id' => $session->id,
-                'logged_out' => $session->invalidated,
             ];
         });
     }
