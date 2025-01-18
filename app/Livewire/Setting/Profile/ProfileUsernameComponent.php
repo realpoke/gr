@@ -14,6 +14,7 @@ class ProfileUsernameComponent extends Component
 {
     public ProfileUsernameForm $form;
 
+    #[On('echo-private:Interface.{user.id},PrivateUsernameChangedEvent')]
     public function mount()
     {
         $this->form->user = $this->user;
@@ -33,14 +34,6 @@ class ProfileUsernameComponent extends Component
     public function resetForm()
     {
         $this->form->username = $this->user->username;
-    }
-
-    #[On('echo:Public.Interface,PublicUsernameChangedEvent')]
-    public function usernameChanged($event)
-    {
-        if ($event['user_id'] == $this->user->id) {
-            $this->form->username = $event['username'];
-        }
     }
 
     #[Computed()]

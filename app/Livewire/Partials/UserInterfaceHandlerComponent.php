@@ -45,7 +45,7 @@ class UserInterfaceHandlerComponent extends Component
     #[On('echo-private:Interface.{user.id},PrivateUsernameChangedEvent')]
     public function usernameChanged()
     {
-        $this->dispatch('username-changed')->to(NavigationComponent::class);
+        $this->dispatch('private-username-changed')->to(NavigationComponent::class);
     }
 
     #[Computed()]

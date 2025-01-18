@@ -10,7 +10,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-#[On('username-changed')]
+#[On('private-username-changed')]
 class NavigationComponent extends Component
 {
     public function logout()
