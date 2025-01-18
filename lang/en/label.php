@@ -23,4 +23,6 @@ return [
     'logout-other' => 'Logout Other Devices',
     'two-factor-logout-other-description' => 'After setting up Two-Factor Authentication, you will be logged out of all other devices.',
     'two-factor-code' => 'Two-Factor Code',
+    'setup-key' => 'Setup Key',
+    'qr-code' => 'QR Code',
 ];

@@ -42,7 +42,11 @@ return [
             'enable' => 'Enable Two-Factor Authentication',
             'modal' => [
                 'heading' => 'Verify Two-Factor Authentication',
-                'subheading' => 'Scan the QR code with your Authenticator app.',
+                'subheading' => 'Then enter your new two-factor code below to verify two-factor authentication.',
+                'use-qr' => 'Change to QR Code mode',
+                'use-key' => 'Change to Setup Key mode',
+                'qr-subheading' => 'Scan the QR code with your Authenticator app.',
+                'key-subheading' => 'Copy the setup key and paste it into your Authenticator app.',
                 'action' => 'Verify & Enable',
             ],
         ],
