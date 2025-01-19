@@ -26,7 +26,9 @@ class AuthenticateUserAction extends BaseAction
         $this->form->validateOnly('password');
         $this->form->validateOnly('remember');
 
-        $user = User::where('email', $this->form->email)->first();
+        $user = User::where('email', $this->form->email)
+            ->where('fake', false)
+            ->first();
 
         if (is_null($user)) {
             $this->form->addError('email', __('auth.failed'));

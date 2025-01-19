@@ -57,6 +57,19 @@ return [
             'throw' => false,
         ],
 
+        'binaries' => [
+            'driver' => 'local',
+            'root' => storage_path('binaries'),
+            'throw' => false,
+            'visibility' => 'private',
+        ],
+
+        'replays' => [
+            'driver' => 'local',
+            'root' => storage_path('replays'),
+            'throw' => false,
+            'visibility' => 'private',
+        ],
     ],
 
     /*

@@ -1,0 +1,34 @@
+<?php
+
+return [
+    'game-mode' => [
+        'solo' => 'Solo',
+        '1-v-1' => 'One vs One',
+        'team-v-team' => 'Team vs Team',
+        'ffa' => 'Free For All',
+        'co-op' => 'Co-op',
+        'multi-team' => 'Multi-team',
+        'unsupported' => 'Unsupported',
+    ],
+    'game-type' => [
+        'solo' => 'Solo',
+        'co-op-2' => 'Co-op 2',
+        'co-op-3' => 'Co-op 3',
+        'co-op-4' => 'Co-op 4',
+        'co-op-5' => 'Co-op 5',
+        'co-op-6' => 'Co-op 6',
+        'co-op-7' => 'Co-op 7',
+        'co-op-8' => 'Co-op 8',
+        'multi-team-3' => 'Multi-team 3',
+        'multi-team-4' => 'Multi-team 4',
+        '2-v-2' => 'Two vs Two',
+        '3-v-3' => 'Three vs Three',
+        '4-v-4' => 'Four vs Four',
+        'ffa-3' => 'Free For All 3',
+        'ffa-4' => 'Free For All 4',
+        'ffa-5' => 'Free For All 5',
+        'ffa-6' => 'Free For All 6',
+        'ffa-7' => 'Free For All 7',
+        'ffa-8' => 'Free For All 8',
+    ],
+];
