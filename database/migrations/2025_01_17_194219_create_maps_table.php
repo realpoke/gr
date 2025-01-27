@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('hash');
             $table->datetime('verified_at')->nullable();
             $table->integer('plays')->default(0);
+            $table->integer('plays_monthly')->default(0);
+            $table->integer('plays_weekly')->default(0);
             $table->string('file')->nullable();
             $table->json('types')->nullable();
             $table->json('modes')->nullable();

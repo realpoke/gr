@@ -19,6 +19,8 @@ class SettingPage extends Component
     private static array $tabs = [
         'account',
         'profile',
+        'supporter',
+        'billing',
     ];
 
     public function mount(Request $request)

@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('gentools', function (Blueprint $table) {
             $table->id();
             $table->string('gentool_id');
+            $table->boolean('private');
             $table->foreignIdFor(User::class);
             $table->timestamps();
         });

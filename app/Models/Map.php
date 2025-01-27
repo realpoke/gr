@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\CastEnumArray;
 use App\Enums\Game\GameModeEnum;
 use App\Enums\Game\GameTypeEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -26,6 +27,9 @@ class Map extends Model
         'file',
         'types',
         'modes',
+        'plays',
+        'plays_monthly',
+        'plays_weekly',
     ];
 
     protected $casts = [
@@ -37,5 +41,19 @@ class Map extends Model
     public function games(): HasMany
     {
         return $this->hasMany(Game::class);
+    }
+
+    public function isRanked(): bool
+    {
+        return $this->verified_at != null;
+    }
+
+    public function scopeSearch(Builder $query, string $searchTerm): Builder
+    {
+        return $query->whereLike([
+            'hash',
+            'name',
+            'id',
+        ], $searchTerm);
     }
 }

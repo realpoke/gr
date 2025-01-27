@@ -158,20 +158,27 @@ class ReplayParserAction extends BaseAction
                     $this->replayOwnerName = $player['Name'];
                 }
 
+                $type = PlayerTypeEnum::tryFrom(strtolower(str_replace(' ', '-', $player['Type'])));
+                if ($type === null) {
+                    throw new \Exception('Player '.$player['Name'].' has an invalid type set: '.$player['Type']);
+                }
+
                 $faction = FactionEnum::tryFrom(strtolower(str_replace(' ', '-', $player['Faction'])));
 
                 if ($faction === null) {
                     throw new \Exception('Player '.$player['Name'].' has an invalid faction set: '.$player['Faction']);
                 }
 
-                $side = SideEnum::tryFrom(strtolower(str_replace(' ', '-', $playerSummary['Side'])));
-                if ($side === null) {
-                    throw new \Exception('Player '.$player['Name'].' has an invalid side set: '.$playerSummary['Side']);
-                }
-
-                $type = PlayerTypeEnum::tryFrom(strtolower(str_replace(' ', '-', $player['Type'])));
-                if ($type === null) {
-                    throw new \Exception('Player '.$player['Name'].' has an invalid type set: '.$player['Type']);
+                if (! $faction->isPlaying() && $type->isHuman()) {
+                    $side = SideEnum::OBSERVER;
+                } else {
+                    $side = SideEnum::tryFrom(strtolower(str_replace(' ', '-', $playerSummary['Side'])));
+                    if ($side === null) {
+                        if ($faction == FactionEnum::RANDOM) { // TODO: Look into getting a btter binary replay parser, this could happen if the game is way to short.
+                            throw new \Exception('Player '.$player['Name'].' is random faction but their side was not detected!');
+                        }
+                        throw new \Exception('Player '.$player['Name'].' has an invalid side set: '.$playerSummary['Side']);
+                    }
                 }
 
                 // Determine if the player is playing

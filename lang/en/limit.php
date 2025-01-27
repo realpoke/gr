@@ -18,4 +18,5 @@ return [
     'change-username' => 'change username',
     'logout-other-devices' => 'logout other devices',
     'logout-other-specific-device' => 'logout other specific device',
+    'claim-computer' => 'claim computer',
 ];

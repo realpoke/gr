@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Actions\Clean\CleanOldClaimsAction;
 use App\Actions\Clean\CleanOldReplaysAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -27,8 +28,15 @@ class CleanStuffJob implements ShouldQueue
         $cleanReplays = new CleanOldReplaysAction;
         $cleanReplays->handle();
 
+        $cleanClaims = new CleanOldClaimsAction;
+        $cleanClaims->handle();
+
         if ($cleanReplays->failed()) {
             Log::error('Failed to clean old replays: '.$cleanReplays->getErrorMessage());
+        }
+
+        if ($cleanClaims->failed()) {
+            Log::error('Failed to clean old claims: '.$cleanClaims->getErrorMessage());
         }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Actions\GenTool;
 
 use App\Actions\BaseAction;
 use App\Enums\Game\GameTypeEnum;
+use App\Traits\Rules\GameRules;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -14,6 +15,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class GetLatestsGenToolGamesAction extends BaseAction
 {
+    use GameRules;
+
     protected Collection $replays;
 
     public function getReplays(): Collection
@@ -26,6 +29,15 @@ class GetLatestsGenToolGamesAction extends BaseAction
         return $this->replays->flatMap(function ($item) {
             return collect($item['files'])->filter(function ($file) {
                 return Str::endsWith($file, '.rep');
+            });
+        });
+    }
+
+    public function getTextPaths(): Collection
+    {
+        return $this->replays->flatMap(function ($item) {
+            return collect($item['files'])->filter(function ($file) {
+                return Str::endsWith($file, '.txt');
             });
         });
     }
@@ -75,6 +87,10 @@ class GetLatestsGenToolGamesAction extends BaseAction
 
                 // Skip if not an array or missing required structure
                 if (! is_array($parsedYaml) || ! isset($parsedYaml['files']) || ! is_array($parsedYaml['files'])) {
+                    continue;
+                }
+
+                if ($parsedYaml['version'] < $this->minimumGenToolVersion()) {
                     continue;
                 }
 

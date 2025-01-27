@@ -9,4 +9,7 @@ return [
     'register' => 'Register',
     'reset-password' => 'Reset Password',
     'email-verification' => 'Email Verification',
+    'maps' => 'Maps',
+    'games' => 'Games',
+    'leaderboard' => 'Leaderboard',
 ];

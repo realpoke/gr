@@ -10,7 +10,6 @@ enum PlayerTypeEnum: string
 
     case HUMAN = 'h';
     case BOT = 'c';
-    case OBSERVER = 'o';
 
     public function isHuman(): bool
     {
@@ -20,10 +19,5 @@ enum PlayerTypeEnum: string
     public function isBot(): bool
     {
         return $this->value === self::BOT->value;
-    }
-
-    public function isObserver(): bool
-    {
-        return $this->value === self::OBSERVER->value;
     }
 }

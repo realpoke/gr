@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
+use App\Models\Pivots\GameUserPivot;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Paddle\Billable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use Billable, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -45,11 +49,35 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'fake' => 'bool',
         ];
+    }
+
+    public function games(): BelongsToMany
+    {
+        return $this->belongsToMany(Game::class, GameUserPivot::TABLE)
+            ->using(GameUserPivot::class)
+            ->withPivot(GameUserPivot::FIELDS)
+            ->withTimestamps();
     }
 
     public function gentools(): HasMany
     {
         return $this->hasMany(Gentool::class);
+    }
+
+    public function claim(): HasOne
+    {
+        return $this->hasOne(Claim::class);
+    }
+
+    public function isClaming(): bool
+    {
+        return ! ($this->claim?->isExpired() ?? true);
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->customer()->exists();
     }
 }

@@ -9,6 +9,8 @@ class DownloadLatestsGenToolGamesAction extends BaseAction
 {
     public function execute(): self
     {
+        $delayTime = now();
+
         $gameInfo = new GetLatestsGenToolGamesAction;
         $gameInfo = $gameInfo->handle();
 
@@ -18,16 +20,17 @@ class DownloadLatestsGenToolGamesAction extends BaseAction
 
         // Spread out the downloads over the next 10 minutes
         $replays = $gameInfo->getReplays();
+        $textPaths = $gameInfo->getTextPaths();
         $replayCount = $replays->count();
 
         $totalDelayMs = 10 * 60 * 1000; // Total delay 10 minutes in milliseconds
         $baseDelayMs = (int) round($totalDelayMs / $replayCount);
 
-        $delayTime = now();
         foreach ($gameInfo->getReplayPaths() as $index => $urlPath) {
             $replay = $replays->get($index);
+            $txt = $textPaths->get($index);
 
-            DownloadGenToolGameJob::dispatch($urlPath, $replay['userid'], $replay['username'], $index)->delay($delayTime);
+            DownloadGenToolGameJob::dispatch($urlPath, $txt, $replay['userid'], $replay['username'], $index)->delay($delayTime);
 
             $delayTime->addMilliseconds($baseDelayMs);
         }

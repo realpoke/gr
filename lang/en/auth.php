@@ -46,4 +46,5 @@ return [
         'not-enabled' => 'Two-Factor Authentication not enabled.',
     ],
     'two-factor-required' => 'Two-Factor Authentication required.',
+    'already-claiming' => 'You are already claiming a computer.',
 ];

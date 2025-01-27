@@ -10,7 +10,7 @@ class CastEnumArray implements CastsAttributes
 
     public function get($model, string $key, $value, array $attributes)
     {
-        $array = json_decode($value, true) ?? [];
+        $array = json_decode($value ?? '[]', true) ?? [];
 
         return array_map(fn ($item) => $this->enumClass::from($item), $array);
     }

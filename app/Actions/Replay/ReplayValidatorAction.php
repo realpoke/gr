@@ -3,9 +3,12 @@
 namespace App\Actions\Replay;
 
 use App\Actions\BaseAction;
+use App\Traits\Rules\GameRules;
 
 class ReplayValidatorAction extends BaseAction
 {
+    use GameRules;
+
     public function __construct(private ReplayParserAction $parser) {}
 
     public function execute(): self
@@ -17,6 +20,11 @@ class ReplayValidatorAction extends BaseAction
         $gameBuildValidator = $this->validateGameBuild();
         if ($gameBuildValidator !== null) {
             return $this->setFailed($gameBuildValidator);
+        }
+
+        $longEnoughValidator = $this->longEnough();
+        if ($longEnoughValidator !== null) {
+            return $this->setFailed($longEnoughValidator);
         }
 
         $gameTypeValidator = $this->validateGameType();
@@ -42,11 +50,20 @@ class ReplayValidatorAction extends BaseAction
         return $this->setSuccessful();
     }
 
+    private function longEnough(): ?string
+    {
+        if ($this->parser->getMetaData()['gameInterval']->totalSeconds < $this->minimumGameInterval()->totalSeconds) {
+            return 'Game interval is too short, must be minimum lenght to count. Interval is: '.$this->parser->getMetaData()['gameInterval']->format('%H:%I:%S');
+        }
+
+        return null;
+    }
+
     private function correctPlayerCount(): ?string
     {
         $shouldBePlaying = $this->parser->getMetaData()['gameType']->playersShouldBePlaying();
-        if ($shouldBePlaying !== null && $this->parser->getPlayers()->count() !== $shouldBePlaying) {
-            return 'Incorrect number of players '.$this->parser->getPlayers()->count().' for game type: '.$this->parser->getMetaData()['gameType']->prettyName();
+        if ($shouldBePlaying !== null && $this->parser->getMetaData()['playersPlaying'] !== $shouldBePlaying) {
+            return 'Replay has incorrect number of players '.$this->parser->getPlayers()->count().' for game type: '.$this->parser->getMetaData()['gameType']->prettyName();
         }
 
         return null;
@@ -66,7 +83,7 @@ class ReplayValidatorAction extends BaseAction
         foreach ($this->parser->getGameData()['players'] as $player) {
             $side = $player['side'];
             if ($side === null || ! $side->isValidSide()) {
-                return 'player has invalid side set: '.$player['side'];
+                return 'player has invalid side set: '.$player['side']->prettyName();
             }
         }
 
@@ -93,6 +110,12 @@ class ReplayValidatorAction extends BaseAction
             ],
             [
                 'BuildDate' => 'Oct 17 2005 17:31:25',
+                'VersionMinor' => 4,
+                'VersionMajor' => 1,
+                'GameType' => 'GENREP',
+            ],
+            [
+                'BuildDate' => 'Sep  6 2012 11:51:43',
                 'VersionMinor' => 4,
                 'VersionMajor' => 1,
                 'GameType' => 'GENREP',

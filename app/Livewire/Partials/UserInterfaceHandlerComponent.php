@@ -12,6 +12,7 @@ use Livewire\Component;
 
 class UserInterfaceHandlerComponent extends Component
 {
+    // TODO: Convert these to js in the frontend
     #[On('echo-private:Interface.{user.id},PrivateAccountLogoutEvent')]
     public function accountLogout($event)
     {

@@ -57,6 +57,16 @@ return [
             'subheading' => 'Change your username.',
         ],
     ],
+    'supporter' => [
+        'monthly-heading' => 'Supporter Monthly',
+        'annualy-heading' => 'Supporter Annual',
+        'monthly-subheading' => 'Subscribe to become a supporter and get access to all of our features, on a monthly basis.',
+        'annualy-subheading' => 'Subscribe to become a supporter and get access to all of our features, on a annualy basis and get 2 months free!',
+        'monthly-monthly' => '/Monthly',
+        'annualy-annualy' => '/Annualy',
+        'monthly-action' => 'Subscribe Monthly',
+        'annualy-action' => 'Subscribe Annualy',
+    ],
     'tab' => [
         'placeholder' => [
             'heading1' => 'Loading some settings...',

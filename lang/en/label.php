@@ -25,4 +25,10 @@ return [
     'two-factor-code' => 'Two-Factor Code',
     'setup-key' => 'Setup Key',
     'qr-code' => 'QR Code',
+    'no-maps' => 'No Maps found.',
+    'search' => 'Search...',
+    'verified-only' => 'Verified Only',
+    'game-mode' => 'Game Mode',
+    'filters-not-applied' => 'Filters Not Applied',
+    'new' => 'New',
 ];

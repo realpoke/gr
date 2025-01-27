@@ -28,6 +28,8 @@ class DownloadLatestsGenToolGamesJob implements ShouldQueue
 
         if ($job->failed()) {
             $this->job->fail(new \Exception($job->getErrorMessage()));
+
+            return;
         }
     }
 }

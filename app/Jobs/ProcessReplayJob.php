@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Actions\Claim\AddCanClaimGameAction;
+use App\Actions\Game\SetupGameAction;
 use App\Actions\GenTool\GetOrCreateGenToolUserAction;
 use App\Actions\Replay\ProcessReplayAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,7 +18,7 @@ class ProcessReplayJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        private string $filePath,
+        private string $fileName,
         private string $userId,
         private string $username
     ) {}
@@ -26,13 +28,15 @@ class ProcessReplayJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $processed = new ProcessReplayAction($this->filePath);
+        $processed = new ProcessReplayAction($this->fileName);
         $processed->handle();
 
         if ($processed->failed()) {
-            Storage::disk('replays')->delete($this->filePath);
+            Storage::disk('replays')->delete($this->fileName);
 
             $this->job->fail(new \Exception($processed->getErrorMessage()));
+
+            return;
         }
 
         $userAction = new GetOrCreateGenToolUserAction($this->userId, $this->username);
@@ -40,10 +44,39 @@ class ProcessReplayJob implements ShouldQueue
 
         if ($userAction->failed()) {
             $this->job->fail(new \Exception($userAction->getErrorMessage()));
+
+            return;
         }
 
-        // TODO: Also rename replay with prefix 'good_'
-        // TODO: Check if best replay and save to database for game to download
-        // TODO: Setup game action and attach user
+        $setupGame = new SetupGameAction(
+            $processed->getParsedReplay(),
+            $userAction->getUser(),
+            $this->fileName
+        );
+        $setupGame->handle();
+
+        if ($setupGame->failed()) {
+            $this->job->fail(new \Exception($setupGame->getErrorMessage()));
+
+            return;
+        }
+
+        $claimGame = new AddCanClaimGameAction(
+            $processed->getParsedReplay()->getReplayOwnerName(),
+            $userAction->getGentool(),
+            $setupGame->getGame()
+        );
+        $claimGame->handle();
+        if ($claimGame->failed()) {
+            $this->job->fail(new \Exception($claimGame->getErrorMessage()));
+
+            return;
+        }
+
+        if (! $setupGame->hasAllUploaded()) {
+            return;
+        }
+
+        CalculateGameResultsJob::dispatch($setupGame->getGame()->id);
     }
 }

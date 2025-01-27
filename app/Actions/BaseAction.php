@@ -23,7 +23,7 @@ class BaseAction implements BaseActionContract
 
     final protected function setFailed(string $errorMessage): self
     {
-        Log::info('Action failed: '.$errorMessage);
+        Log::info('Action failed in '.get_class($this).': '.$errorMessage);
 
         DB::rollBack();
 

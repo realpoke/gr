@@ -13,4 +13,10 @@ return [
     'save' => 'Save',
     'later' => 'Later',
     'terms' => 'Terms & Conditions',
+    'maps' => 'Maps',
+    'games' => 'Games',
+    'leaderboard' => 'Leaderboard',
+    'claim-computer' => 'Claim Computer',
+    'supporter' => 'Supporter',
+    'billing' => 'Billing',
 ];

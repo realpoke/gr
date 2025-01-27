@@ -8,11 +8,18 @@ use App\Models\User;
 
 class GetOrCreateGenToolUserAction extends BaseAction
 {
-    protected ?User $user;
+    private ?User $user;
+
+    private Gentool $gentool;
 
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function getGentool(): Gentool
+    {
+        return $this->gentool;
     }
 
     public function __construct(private string $genToolId, private ?string $username = null) {}
@@ -23,6 +30,7 @@ class GetOrCreateGenToolUserAction extends BaseAction
 
         if ($existingGentool) {
             $this->user = $existingGentool->user;
+            $this->gentool = $existingGentool;
 
             return $this->setSuccessful();
         }
@@ -39,12 +47,13 @@ class GetOrCreateGenToolUserAction extends BaseAction
         ]);
 
         if (! is_null($this->user)) {
-            $gentool = $this->user->gentools()->create([
+            $this->gentool = $this->user->gentools()->create([
                 'gentool_id' => $this->genToolId,
+                'private' => false,
             ]);
         }
 
-        return is_null($this->user) || is_null($gentool) ?
+        return is_null($this->user) || is_null($this->gentool) ?
             $this->setFailed('Could not find or create GenTool user.') :
             $this->setSuccessful();
     }

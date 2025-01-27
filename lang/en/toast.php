@@ -20,4 +20,8 @@ return [
     'two-factor-enabled' => 'Two-Factor Authentication enabled.',
     'two-factor-logout-other-devices' => 'Two-Factor Authentication, all other devices logged out.',
     'two-factor-disabled' => 'Two-Factor Authentication disabled.',
+    'language-updated' => 'Language updated to :language.',
+    'language-failed' => 'Failed to set language to :language.',
+    'filters-applied' => 'Filters applied.',
+    'filters-reset' => 'Filters reset.',
 ];

@@ -14,13 +14,16 @@ class CleanOldReplaysAction extends BaseAction
         $fileNames = Storage::disk('replays')->files();
 
         foreach ($fileNames as $fileName) {
-            if (! Str::endsWith($fileName, '.rep') || Str::startsWith($fileName, 'good')) {
+            if (! Str::endsWith($fileName, '.rep')) {
                 continue;
             }
 
-            $lastModified = Carbon::createFromTimestamp(Storage::disk('replays')->lastModified($fileName));
+            $safeFor = Str::startsWith($fileName, 'good') ? 24 * 7 : 4;
 
-            if ($lastModified->diffInHours(Carbon::now()) >= 24) {
+            $lastModified = Carbon::createFromTimestamp(Storage::disk('replays')->lastModified($fileName));
+            $diffInHours = $lastModified->diffInHours(Carbon::now());
+
+            if ($diffInHours >= $safeFor || $diffInHours >= 24 * 30) {
                 Storage::disk('replays')->delete($fileName);
             }
         }
