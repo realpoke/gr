@@ -26,7 +26,7 @@ class DeleteAccountUserAction extends BaseAction
             throw $e;
         }
 
-        $logoutter = new LogoutOtherDevicesAction($this->form->password);
+        $logoutter = new LogoutOtherDevicesAction($this->form);
         $logoutter->handle();
 
         defer(function () {

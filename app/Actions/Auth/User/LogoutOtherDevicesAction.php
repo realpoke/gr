@@ -4,6 +4,7 @@ namespace App\Actions\Auth\User;
 
 use App\Actions\BaseAction;
 use App\Events\PrivateAccountLogoutEvent;
+use App\Livewire\Setting\Account\AccountDeleteForm;
 use App\Livewire\Setting\Account\AccountLogoutOtherDevicesForm;
 use App\Traits\WithLimits;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class LogoutOtherDevicesAction extends BaseAction
 {
     use WithLimits;
 
-    public function __construct(private AccountLogoutOtherDevicesForm $form) {}
+    public function __construct(private AccountLogoutOtherDevicesForm|AccountDeleteForm $form) {}
 
     public function execute(): self
     {
