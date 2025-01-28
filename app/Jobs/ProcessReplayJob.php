@@ -8,6 +8,7 @@ use App\Actions\GenTool\GetOrCreateGenToolUserAction;
 use App\Actions\Replay\ProcessReplayAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProcessReplayJob implements ShouldQueue
@@ -34,7 +35,8 @@ class ProcessReplayJob implements ShouldQueue
         if ($processed->failed()) {
             Storage::disk('replays')->delete($this->fileName);
 
-            $this->job->fail(new \Exception($processed->getErrorMessage()));
+            /* $this->job->fail(new \Exception($processed->getErrorMessage())); */
+            Log::info($processed->getErrorMessage());
 
             return;
         }
@@ -43,7 +45,8 @@ class ProcessReplayJob implements ShouldQueue
         $userAction->handle();
 
         if ($userAction->failed()) {
-            $this->job->fail(new \Exception($userAction->getErrorMessage()));
+            /* $this->job->fail(new \Exception($userAction->getErrorMessage())); */
+            Log::info($userAction->getErrorMessage());
 
             return;
         }
@@ -57,7 +60,8 @@ class ProcessReplayJob implements ShouldQueue
         $setupGame->handle();
 
         if ($setupGame->failed()) {
-            $this->job->fail(new \Exception($setupGame->getErrorMessage()));
+            /* $this->job->fail(new \Exception($setupGame->getErrorMessage())); */
+            Log::info($setupGame->getErrorMessage());
 
             return;
         }
@@ -69,7 +73,8 @@ class ProcessReplayJob implements ShouldQueue
         );
         $claimGame->handle();
         if ($claimGame->failed()) {
-            $this->job->fail(new \Exception($claimGame->getErrorMessage()));
+            /* $this->job->fail(new \Exception($claimGame->getErrorMessage())); */
+            Log::info($claimGame->getErrorMessage());
 
             return;
         }
