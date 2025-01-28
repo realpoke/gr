@@ -51,7 +51,8 @@ class ProcessReplayJob implements ShouldQueue
         $setupGame = new SetupGameAction(
             $processed->getParsedReplay(),
             $userAction->getUser(),
-            $this->fileName
+            $this->fileName,
+            $userAction->getGentool()
         );
         $setupGame->handle();
 

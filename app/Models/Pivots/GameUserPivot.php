@@ -3,6 +3,7 @@
 namespace App\Models\Pivots;
 
 use App\Models\Game;
+use App\Models\Gentool;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Foundation\Auth\User;
@@ -14,6 +15,7 @@ class GameUserPivot extends Pivot
         'user_id',
         'elo_change',
         'player_name',
+        'gentool_id',
         'eliminated_position',
         'winner',
     ];
@@ -21,6 +23,7 @@ class GameUserPivot extends Pivot
     public const FIELDS = [
         'elo_change',
         'player_name',
+        'gentool_id',
         'eliminated_position',
         'winner',
     ];
@@ -42,5 +45,10 @@ class GameUserPivot extends Pivot
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function gentool(): BelongsTo
+    {
+        return $this->belongsTo(Gentool::class);
     }
 }

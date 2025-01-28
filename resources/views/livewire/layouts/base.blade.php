@@ -13,6 +13,7 @@
 
     @yield('head')
     @fluxStyles
+    @paddleJS
 </head>
 
 <body class="min-h-screen bg-white dark:bg-zinc-800">
@@ -27,7 +28,6 @@
     @endauth
 
     @fluxScripts
-    @paddleJS
 </body>
 
 </html>

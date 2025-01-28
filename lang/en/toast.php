@@ -24,4 +24,7 @@ return [
     'language-failed' => 'Failed to set language to :language.',
     'filters-applied' => 'Filters applied.',
     'filters-reset' => 'Filters reset.',
+    'billing-portal-failed' => 'Failed to open billing portal.',
+    'billing-portal-success' => 'Opening billing portal.',
+    'claim-discarded' => 'Game discarded.',
 ];

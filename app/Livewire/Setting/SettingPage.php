@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Setting;
 
+use App\Actions\Setting\Billing\GetBillingPortalAction;
 use App\Models\User;
+use Flux\Flux;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -42,6 +44,26 @@ class SettingPage extends Component
         }
 
         return null;
+    }
+
+    public function billingPortal()
+    {
+        if (! $this->user->isCustomer()) {
+            Flux::toast(__('toast.billing-portal-failed'));
+        }
+
+        $redirect = new GetBillingPortalAction($this->user);
+        $redirect->handle();
+
+        if ($redirect->failed()) {
+            Flux::toast(__('toast.billing-portal-failed'));
+
+            return;
+        }
+
+        Flux::toast(__('toast.billing-portal-success'));
+
+        $this->redirect($redirect->getPortalUrl());
     }
 
     #[Computed()]

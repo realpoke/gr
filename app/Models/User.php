@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Pivots\GameUserPivot;
+use App\Traits\Rules\ClaimRules;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,7 +16,7 @@ use Laravel\Paddle\Billable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use Billable, HasFactory, Notifiable;
+    use Billable, ClaimRules, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -79,5 +80,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isCustomer(): bool
     {
         return $this->customer()->exists();
+    }
+
+    public function canClaimMoreComputers(): bool
+    {
+        return $this->isClaming() && $this->gentools->count() < self::computerClaimLimit();
     }
 }

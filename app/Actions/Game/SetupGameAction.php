@@ -6,6 +6,7 @@ use App\Actions\BaseAction;
 use App\Actions\Replay\ReplayParserAction;
 use App\Enums\Game\GameStatusEnum;
 use App\Models\Game;
+use App\Models\Gentool;
 use App\Models\User;
 
 class SetupGameAction extends BaseAction
@@ -31,7 +32,8 @@ class SetupGameAction extends BaseAction
     public function __construct(
         private ReplayParserAction $parser,
         private User $replayUserOwner,
-        private string $fileName
+        private string $fileName,
+        private GenTool $gentool
     ) {}
 
     public function execute(): self
@@ -75,6 +77,7 @@ class SetupGameAction extends BaseAction
 
         $game->users()->attach($this->replayUserOwner, [
             'player_name' => $this->parser->getReplayOwnerName(),
+            'gentool_id' => $this->gentool->id,
         ]);
 
         if ($this->playingPlayersCount === $this->uploadedPlayingPlayersCount + 1) {

@@ -1,7 +1,10 @@
 @use(App\Enums\SupporterEnum)
 
-<div>
-    @if ($this->user->subscribed())
+<div
+    x-data
+    x-init="Paddle.Setup(); console.log('Paddle reinitialized for button');"
+>
+    @if (!$this->user->subscribed())
         <div class="flex flex-col md:flex-row justify-evenly gap-6">
             <flux:card class="lg:w-2/5 w-full space-y-6">
                 <div>
@@ -18,7 +21,7 @@
                     <div class="flex">
                         <flux:tooltip content="{{ __('tooltip.email-required') }}">
                             <div>
-                                <flux:button variant="primary">{{ __('setting.supporter.monthly-action') }}</flux:button>
+                                <flux:button disabled variant="primary">{{ __('setting.supporter.monthly-action') }}</flux:button>
                             </div>
                         </flux:tooltip>
                     </div>
@@ -48,7 +51,7 @@
                     <div class="flex">
                         <flux:tooltip content="{{ __('tooltip.email-required') }}">
                             <div>
-                                <flux:button variant="primary">{{ __('setting.supporter.annualy-action') }}</flux:button>
+                                <flux:button disabled variant="primary">{{ __('setting.supporter.annualy-action') }}</flux:button>
                             </div>
                         </flux:tooltip>
                     </div>

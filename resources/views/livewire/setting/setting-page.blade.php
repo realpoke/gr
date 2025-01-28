@@ -5,7 +5,9 @@
             <flux:tab name="account" icon="cog-6-tooth">{{ __('navigation.account') }}</flux:tab>
             <flux:tab name="profile" icon="user">{{ __('navigation.profile') }}</flux:tab>
             <flux:tab name="supporter" icon="gem">{{ __('navigation.supporter') }}</flux:tab>
-            <flux:tab name="billing" icon="credit-card">{{ __('navigation.billing') }}</flux:tab>
+            @if ($this->user->isCustomer())
+                <flux:tab name="billing" wire:click="billingPortal" icon="credit-card">{{ __('navigation.billing') }}</flux:tab>
+            @endif
         </flux:tabs>
 
         <flux:tab.panel name="account">

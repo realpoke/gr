@@ -67,6 +67,11 @@ return [
         'monthly-action' => 'Subscribe Monthly',
         'annualy-action' => 'Subscribe Annualy',
     ],
+    'billing' => [
+        'title' => 'We are loading your billing portal, please wait...',
+        'subtitle' => 'If nothing happens, please click the button below.',
+        'action' => 'Open Billing Portal',
+    ],
     'tab' => [
         'placeholder' => [
             'heading1' => 'Loading some settings...',

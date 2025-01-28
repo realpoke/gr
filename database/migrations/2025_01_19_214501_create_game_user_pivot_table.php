@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Game;
+use App\Models\Gentool;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Game::class);
 
             $table->boolean('winner')->default(false);
+            $table->foreignIdFor(Gentool::class);
             $table->tinyInteger('eliminated_position')->unsigned()->nullable();
             $table->integer('elo_change')->default(0);
             $table->string('player_name')->nullable();

@@ -13,16 +13,18 @@ use Livewire\Component;
 #[On('echo-private:Interface.{user.id},PrivateAccountEmailVerifiedEvent')]
 class SupporterTab extends Component
 {
+    // TODO: Make this our own modal with inline checkout
+    // FIXME: Only works if you refresh the page while being on the supporter tab
     #[Computed()]
     public function paddleMonthly()
     {
-        return $this->user->checkout(SupporterEnum::MONTHLY->priceId())->returnTo(route('setting.page', ['tab' => 'billing']));
+        return $this->user->checkout(SupporterEnum::MONTHLY->priceId())->returnTo(route('setting.page', ['tab' => 'supporter']));
     }
 
     #[Computed()]
     public function paddleAnnualy()
     {
-        return $this->user->checkout(SupporterEnum::ANNUALY->priceId())->returnTo(route('setting.page', ['tab' => 'billing']));
+        return $this->user->checkout(SupporterEnum::ANNUALY->priceId())->returnTo(route('setting.page', ['tab' => 'supporter']));
     }
 
     #[Computed()]

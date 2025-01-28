@@ -19,6 +19,10 @@ class GetBillingPortalAction extends BaseAction
 
     public function execute(): self
     {
+        if (! $this->user->hasVerifiedEmail()) {
+            return $this->setFailed('User has not verified email.');
+        }
+
         $customer = $this->user->customer()->first();
 
         if (! $customer) {
