@@ -12,6 +12,7 @@ use Livewire\Component;
 #[Layout('livewire.layouts.auth')]
 class RegisterUserPage extends Component
 {
+    // FIXME: When creating an account it don't allow scrolling, might have a modal open in the background
     public RegisterUserForm $form;
 
     public function register()

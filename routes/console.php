@@ -8,5 +8,5 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::job(new DownloadLatestsGenToolGamesJob)->evenInMaintenanceMode()->everyTenMinutes();
 Schedule::job(new CleanStuffJob)->evenInMaintenanceMode()->dailyAt('05:00');
 
-Schedule::job(new CleanMapPlaysJob(monthly: true))->monthly();
-Schedule::job(new CleanMapPlaysJob(weekly: true))->weekly();
+Schedule::job(new CleanMapPlaysJob(monthly: true))->evenInMaintenanceMode()->monthly();
+Schedule::job(new CleanMapPlaysJob(weekly: true))->evenInMaintenanceMode()->weekly();
