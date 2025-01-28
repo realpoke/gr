@@ -74,10 +74,8 @@ class ProcessReplayJob implements ShouldQueue
             return;
         }
 
-        if (! $setupGame->hasAllUploaded()) {
-            return;
+        if ($setupGame->hasAllUploaded()) {
+            CalculateGameResultsJob::dispatch($setupGame->getGame()->id);
         }
-
-        CalculateGameResultsJob::dispatch($setupGame->getGame()->id);
     }
 }
