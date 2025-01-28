@@ -6,7 +6,6 @@ use App\Actions\GenTool\DownloadGenToolReplayAction;
 use App\Actions\GenTool\TextFileValidatorAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
 
 class DownloadGenToolGameJob implements ShouldQueue
 {
@@ -32,8 +31,7 @@ class DownloadGenToolGameJob implements ShouldQueue
         $txtValidator->handle();
 
         if ($txtValidator->failed()) {
-            /* $this->job->fail(new \Exception($txtValidator->getErrorMessage())); */
-            Log::info($txtValidator->getErrorMessage());
+            $this->fail($txtValidator->getErrorMessage());
 
             return;
         }
@@ -42,8 +40,7 @@ class DownloadGenToolGameJob implements ShouldQueue
         $downloader->handle();
 
         if ($downloader->failed()) {
-            /* $this->job->fail(new \Exception($downloader->getErrorMessage())); */
-            Log::info($downloader->getErrorMessage());
+            $this->fail($downloader->getErrorMessage());
 
             return;
         }

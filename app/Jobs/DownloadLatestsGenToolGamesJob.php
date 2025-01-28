@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Actions\GenTool\DownloadLatestsGenToolGamesAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
 
 class DownloadLatestsGenToolGamesJob implements ShouldQueue
 {
@@ -28,8 +27,7 @@ class DownloadLatestsGenToolGamesJob implements ShouldQueue
         $job->handle();
 
         if ($job->failed()) {
-            /* $this->job->fail(new \Exception($job->getErrorMessage())); */
-            Log::info($job->getErrorMessage());
+            $this->fail($job->getErrorMessage());
 
             return;
         }

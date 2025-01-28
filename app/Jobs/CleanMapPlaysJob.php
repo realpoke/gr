@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Actions\Clean\CleanMapPlaysAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
 
 class CleanMapPlaysJob implements ShouldQueue
 {
@@ -28,8 +27,7 @@ class CleanMapPlaysJob implements ShouldQueue
         $action->handle();
 
         if ($action->failed()) {
-            /* $this->job->fail(new \Exception($action->getErrorMessage())); */
-            Log::info($action->getErrorMessage());
+            $this->fail($action->getErrorMessage());
         }
     }
 }
