@@ -5,6 +5,7 @@ namespace App\Actions\Auth\Email;
 use App\Actions\BaseAction;
 use App\Traits\WithLimits;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Concurrency;
 
 class SendVerificationEmailAction extends BaseAction
 {
@@ -18,7 +19,7 @@ class SendVerificationEmailAction extends BaseAction
             return $this->setSuccessful();
         }
 
-        defer(fn () => Auth::user()->sendEmailVerificationNotification());
+        Concurrency::defer(fn () => Auth::user()->sendEmailVerificationNotification());
 
         return $this->setSuccessful();
     }

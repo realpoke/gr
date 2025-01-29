@@ -8,6 +8,7 @@ use App\Livewire\Setting\Account\AccountDeleteForm;
 use App\Livewire\Setting\Account\AccountLogoutOtherDevicesForm;
 use App\Traits\WithLimits;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -25,7 +26,7 @@ class LogoutOtherDevicesAction extends BaseAction
 
         Auth::logoutOtherDevices($this->form->password);
 
-        defer(function () {
+        Concurrency::defer(function () {
             DB::connection(config('session.connection'))->table(config('session.table', 'sessions'))
                 ->where('user_id', Auth::user()->id)
                 ->where('id', '!=', Session::getId())

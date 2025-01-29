@@ -7,6 +7,7 @@ use App\Events\PrivateUsernameChangedEvent;
 use App\Events\PublicUsernameChangedEvent;
 use App\Livewire\Setting\Profile\ProfileUsernameForm;
 use App\Traits\WithLimits;
+use Illuminate\Support\Facades\Concurrency;
 
 class ChangeProfileUsernameAction extends BaseAction
 {
@@ -26,7 +27,7 @@ class ChangeProfileUsernameAction extends BaseAction
 
         $user = $this->form->user;
 
-        defer(function () use ($user) {
+        Concurrency::defer(function () use ($user) {
             broadcast(new PublicUsernameChangedEvent($user));
             broadcast(new PrivateUsernameChangedEvent);
         });

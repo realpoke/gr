@@ -9,6 +9,7 @@ use App\Traits\WithLimits;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\Validator;
 
 class HandleVerificationEmailAction extends BaseAction
@@ -43,7 +44,7 @@ class HandleVerificationEmailAction extends BaseAction
         }
 
         if (Auth::user()->markEmailAsVerified()) {
-            defer(function () {
+            Concurrency::defer(function () {
                 broadcast(new PrivateAccountEmailVerifiedEvent);
                 event(new Verified(Auth::user()));
             });

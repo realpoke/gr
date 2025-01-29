@@ -7,6 +7,7 @@ use App\Events\PrivateAccountTwoFactorEvent;
 use App\Livewire\Setting\Account\AccountTwoFactorForm;
 use App\Traits\WithLimits;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Concurrency;
 use PragmaRX\Google2FA\Google2FA;
 
 class DisableTwoFactorAction extends BaseAction
@@ -37,7 +38,7 @@ class DisableTwoFactorAction extends BaseAction
         $user->two_factor_secret = null;
         $user->save();
 
-        defer(fn () => broadcast(new PrivateAccountTwoFactorEvent));
+        Concurrency::defer(fn () => broadcast(new PrivateAccountTwoFactorEvent));
 
         return $this->setSuccessful();
     }

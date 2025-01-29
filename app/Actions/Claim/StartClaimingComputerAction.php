@@ -9,6 +9,7 @@ use App\Models\Claim;
 use App\Traits\Rules\ClaimRules;
 use App\Traits\WithLimits;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Str;
 
 class StartClaimingComputerAction extends BaseAction
@@ -60,7 +61,7 @@ class StartClaimingComputerAction extends BaseAction
 
         $this->form->reset();
 
-        defer(fn () => broadcast(new PrivateClaimingEvent));
+        Concurrency::defer(fn () => broadcast(new PrivateClaimingEvent));
 
         return $this->setSuccessful();
     }
