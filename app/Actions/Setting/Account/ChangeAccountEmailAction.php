@@ -7,7 +7,8 @@ use App\Events\PrivateEmailChangedEvent;
 use App\Livewire\Setting\Account\AccountEmailForm;
 use App\Traits\WithLimits;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Concurrency;
+
+use function Illuminate\Support\defer;
 
 class ChangeAccountEmailAction extends BaseAction
 {
@@ -35,7 +36,7 @@ class ChangeAccountEmailAction extends BaseAction
             ])->save();
         }
 
-        Concurrency::defer(fn () => event(new PrivateEmailChangedEvent($this->form->email)));
+        defer(fn () => event(new PrivateEmailChangedEvent($this->form->email)));
 
         return $this->setSuccessful();
     }

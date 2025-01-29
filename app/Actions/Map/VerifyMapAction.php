@@ -6,7 +6,8 @@ use App\Actions\BaseAction;
 use App\Enums\Game\GameTypeEnum;
 use App\Events\PublicMapVerifiedEvent;
 use App\Models\Map;
-use Illuminate\Support\Facades\Concurrency;
+
+use function Illuminate\Support\defer;
 
 class VerifyMapAction extends BaseAction
 {
@@ -59,7 +60,7 @@ class VerifyMapAction extends BaseAction
                         'modes' => $enumModes,
                     ]);
 
-                    Concurrency::defer(fn () => broadcast(new PublicMapVerifiedEvent($this->map->id)));
+                    defer(fn () => broadcast(new PublicMapVerifiedEvent($this->map->id)));
 
                     return $this->setSuccessful();
                 } else {

@@ -7,8 +7,9 @@ use App\Actions\BaseAction;
 use App\Livewire\Setting\Account\AccountDeleteForm;
 use App\Traits\WithLimits;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Validation\ValidationException;
+
+use function Illuminate\Support\defer;
 
 class DeleteAccountUserAction extends BaseAction
 {
@@ -30,7 +31,7 @@ class DeleteAccountUserAction extends BaseAction
         $logoutter = new LogoutOtherDevicesAction($this->form);
         $logoutter->handle();
 
-        Concurrency::defer(function () {
+        defer(function () {
             Auth::user()->delete();
 
             if (request()->hasSession()) {

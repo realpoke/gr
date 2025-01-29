@@ -7,8 +7,9 @@ use App\Events\PrivateAccountTwoFactorEvent;
 use App\Livewire\Setting\Account\AccountTwoFactorForm;
 use App\Traits\WithLimits;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Concurrency;
 use PragmaRX\Google2FA\Google2FA;
+
+use function Illuminate\Support\defer;
 
 class VerifyTwoFactorAction extends BaseAction
 {
@@ -37,7 +38,7 @@ class VerifyTwoFactorAction extends BaseAction
         $user->two_factor_secret = $this->twoFactorSecret;
         $user->save();
 
-        Concurrency::defer(fn () => broadcast(new PrivateAccountTwoFactorEvent));
+        defer(fn () => broadcast(new PrivateAccountTwoFactorEvent));
 
         return $this->setSuccessful();
     }
