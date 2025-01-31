@@ -19,4 +19,5 @@ return [
     'claim-computer' => 'Claim Computer',
     'supporter' => 'Supporter',
     'billing' => 'Billing',
+    'my-profile' => 'My Profile',
 ];

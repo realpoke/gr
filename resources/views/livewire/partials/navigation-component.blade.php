@@ -31,8 +31,11 @@
                 <flux:button variant="ghost" icon-trailing="chevron-down">{{ $this->user->username }}</flux:button>
 
                 <flux:menu>
+                    <flux:menu.item wire:navigate href="{{ $this->user->page() }}" icon="user">{{ __('navigation.my-profile') }}</flux:menu.item>
                     <flux:menu.item x-on:click="$flux.modal('claim-computer-modal').show()" icon="monitor-check">{{ __('navigation.claim-computer') }}</flux:menu.item>
+
                     <flux:menu.separator />
+
                     <flux:menu.item wire:navigate href="{{ route('setting.page') }}" icon="cog-6-tooth">{{ __('navigation.setting') }}</flux:menu.item>
                     <flux:menu.item wire:click="logout" icon="arrow-right-start-on-rectangle">{{ __('navigation.logout') }}</flux:menu.item>
                 </flux:menu>
@@ -73,6 +76,7 @@
 
         <flux:navlist variant="outline">
             @auth
+                <flux:navlist.item wire:navigate href="{{ $this->user->page() }}" icon="user">{{ __('navigation.my-profile') }}</flux:navlist.item>
                 <flux:navlist.item x-on:click="$flux.modal('claim-computer-modal').show()" icon="monitor-check">{{ __('navigation.claim-computer') }}</flux:navlist.item>
                 <flux:navlist.item wire:navigate href="{{ route('setting.page') }}" icon="cog-6-tooth">{{ __('navigation.setting') }}</flux:navlist.item>
                 <flux:navlist.item wire:click="logout" icon="arrow-right-start-on-rectangle">{{ __('navigation.logout') }}</flux:navlist.item>

@@ -38,6 +38,10 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'email',
+        'email_verified_at',
+        'fake',
     ];
 
     /**
@@ -65,6 +69,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function gentools(): HasMany
     {
         return $this->hasMany(Gentool::class);
+    }
+
+    public function page(): string
+    {
+        return route('show.profile.page', $this->id);
     }
 
     public function claim(): HasOne
