@@ -9,6 +9,8 @@ use App\Models\Game;
 use App\Models\Gentool;
 use Illuminate\Support\Facades\Log;
 
+use function Illuminate\Support\defer;
+
 class AddCanClaimGameAction extends BaseAction
 {
     public function __construct(
@@ -28,7 +30,7 @@ class AddCanClaimGameAction extends BaseAction
             $claim->save();
             Log::debug('User info broadcast stuff');
             Log::debug($claim->user_id);
-            broadcast(new PrivateFoundClaimableComputerEvent($claim->user_id));
+            defer(fn () => broadcast(new PrivateFoundClaimableComputerEvent($claim->user_id)));
         }
 
         return $this->setSuccessful();

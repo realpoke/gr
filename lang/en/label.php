@@ -31,4 +31,6 @@ return [
     'game-mode' => 'Game Mode',
     'filters-not-applied' => 'Filters Not Applied',
     'new' => 'New',
+    'id' => 'Identifier',
+    'claimed-at' => 'Claimed At',
 ];

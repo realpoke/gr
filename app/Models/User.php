@@ -84,6 +84,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function canClaimMoreComputers(): bool
     {
-        return $this->isClaming() && $this->gentools->count() < self::computerClaimLimit();
+        return $this->isClaming() || $this->gentools->count() < self::computerClaimLimit();
+    }
+
+    public function claimCount(): int
+    {
+        return $this->gentools()->count();
     }
 }

@@ -8,7 +8,6 @@ use App\Actions\GenTool\GetOrCreateGenToolUserAction;
 use App\Actions\Replay\ProcessReplayAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProcessReplayJob implements ShouldQueue
@@ -29,59 +28,54 @@ class ProcessReplayJob implements ShouldQueue
      */
     public function handle(): void
     {
-        try {
-            $processed = new ProcessReplayAction($this->fileName);
-            $processed->handle();
+        $processed = new ProcessReplayAction($this->fileName);
+        $processed->handle();
 
-            if ($processed->failed()) {
-                Storage::disk('replays')->delete($this->fileName);
+        if ($processed->failed()) {
+            Storage::disk('replays')->delete($this->fileName);
 
-                $this->fail($processed->getErrorMessage());
+            $this->fail($processed->getErrorMessage());
 
-                return;
-            }
+            return;
+        }
 
-            $userAction = new GetOrCreateGenToolUserAction($this->userId, $this->username);
-            $userAction->handle();
+        $userAction = new GetOrCreateGenToolUserAction($this->userId, $this->username);
+        $userAction->handle();
 
-            if ($userAction->failed()) {
-                $this->fail($userAction->getErrorMessage());
+        if ($userAction->failed()) {
+            $this->fail($userAction->getErrorMessage());
 
-                return;
-            }
+            return;
+        }
 
-            $setupGame = new SetupGameAction(
-                $processed->getParsedReplay(),
-                $userAction->getUser(),
-                $this->fileName,
-                $userAction->getGentool()
-            );
-            $setupGame->handle();
+        $setupGame = new SetupGameAction(
+            $processed->getParsedReplay(),
+            $userAction->getUser(),
+            $this->fileName,
+            $userAction->getGentool()
+        );
+        $setupGame->handle();
 
-            if ($setupGame->failed()) {
-                $this->fail($setupGame->getErrorMessage());
+        if ($setupGame->failed()) {
+            $this->fail($setupGame->getErrorMessage());
 
-                return;
-            }
+            return;
+        }
 
-            $claimGame = new AddCanClaimGameAction(
-                $processed->getParsedReplay()->getReplayOwnerName(),
-                $userAction->getGentool(),
-                $setupGame->getGame()
-            );
-            $claimGame->handle();
-            if ($claimGame->failed()) {
-                $this->fail($claimGame->getErrorMessage());
+        $claimGame = new AddCanClaimGameAction(
+            $processed->getParsedReplay()->getReplayOwnerName(),
+            $userAction->getGentool(),
+            $setupGame->getGame()
+        );
+        $claimGame->handle();
+        if ($claimGame->failed()) {
+            $this->fail($claimGame->getErrorMessage());
 
-                return;
-            }
+            return;
+        }
 
-            if ($setupGame->hasAllUploaded()) {
-                CalculateGameResultsJob::dispatch($setupGame->getGame()->id);
-            }
-        } catch (\Throwable $th) {
-            Log::error('SOMETHING BAAAD HAPPEND! Failed to process replay: '.$th->getMessage());
-            $this->fail($th->getMessage());
+        if ($setupGame->hasAllUploaded()) {
+            CalculateGameResultsJob::dispatch($setupGame->getGame()->id);
         }
     }
 }

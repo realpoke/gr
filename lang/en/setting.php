@@ -21,6 +21,20 @@ return [
             'heading' => 'Change Password',
             'subheading' => 'You should change your password regularly.',
         ],
+        'claim' => [
+            'heading' => 'Computer Claiming',
+            'subheading' => 'Claim and manage computers to play online matches.',
+            'activity-details' => 'Latests Activity Details',
+            'revoke' => 'Revoke Claim',
+            'no-claims' => [
+                'heading' => 'Currently no claims',
+                'subheading' => 'Claim your computer below.',
+            ],
+            'has-claims' => [
+                'heading' => 'Manage computer claims',
+                'subheading' => 'Manage your computers below. You can claim a maximum of :max computers at once, remove a computer to claim another computer. You currently have :current computers claimed.',
+            ],
+        ],
         'email' => [
             'heading' => 'Email',
             'subheading' => 'Verify or change your email address.',

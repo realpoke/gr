@@ -27,4 +27,6 @@ return [
     'billing-portal-failed' => 'Failed to open billing portal.',
     'billing-portal-success' => 'Opening billing portal.',
     'claim-discarded' => 'Game discarded.',
+    'claim-removed' => 'Claim removed.',
+    'claim-remove-failed' => 'Failed to remove claim.',
 ];

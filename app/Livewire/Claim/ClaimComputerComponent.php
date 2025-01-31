@@ -24,7 +24,7 @@ class ClaimComputerComponent extends Component
 
     public string $claimName = '';
 
-    public string $within;
+    public string $within = '';
 
     #[On('echo-private:Interface.{user.id},PrivateFoundClaimableComputerEvent')]
     public function boot()
@@ -78,5 +78,11 @@ class ClaimComputerComponent extends Component
         }
 
         return Game::whereIn('id', $ids)->get();
+    }
+
+    #[Computed()]
+    public function maxClaims(): int
+    {
+        return self::computerClaimLimit();
     }
 }

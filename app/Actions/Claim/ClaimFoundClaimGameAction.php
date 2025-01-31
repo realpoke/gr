@@ -7,6 +7,8 @@ use App\Events\PrivateClaimingEvent;
 use App\Models\Game;
 use Illuminate\Support\Facades\Auth;
 
+use function Illuminate\Support\defer;
+
 class ClaimFoundClaimGameAction extends BaseAction
 {
     public function __construct(private Game $game) {}
@@ -68,7 +70,8 @@ class ClaimFoundClaimGameAction extends BaseAction
 
         $claim->delete();
 
-        broadcast(new PrivateClaimingEvent);
+        // FIXME: When a claim is done, and the state resets the modal is in a stuck placeholder state
+        defer(fn () => broadcast(new PrivateClaimingEvent));
 
         return $this->setSuccessful();
     }

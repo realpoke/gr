@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Game\GameStatusEnum;
 use App\Enums\Game\GameTypeEnum;
 use App\Models\Pivots\GameUserPivot;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -56,5 +57,12 @@ class Game extends Model
     public function map(): BelongsTo
     {
         return $this->belongsTo(Map::class);
+    }
+
+    public function scopeSearch(Builder $query, string $searchTerm): Builder
+    {
+        return $query->whereLike([
+            'hash',
+        ], $searchTerm);
     }
 }

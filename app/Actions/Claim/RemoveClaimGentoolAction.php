@@ -4,14 +4,14 @@ namespace App\Actions\Claim;
 
 use App\Actions\BaseAction;
 use App\Events\PrivateClaimingEvent;
-use App\Models\Game;
+use App\Models\Gentool;
 use Illuminate\Support\Facades\Auth;
 
 use function Illuminate\Support\defer;
 
-class DiscardFoundClaimGameAction extends BaseAction
+class RemoveClaimGentoolAction extends BaseAction
 {
-    public function __construct(private Game $game) {}
+    public function __construct(private Gentool $gentool) {}
 
     public function execute(): self
     {
@@ -19,14 +19,7 @@ class DiscardFoundClaimGameAction extends BaseAction
             return $this->setFailed('User not logged in.');
         }
 
-        $claim = Auth::user()->claim;
-
-        $claim->game_ids = collect($claim->game_ids)
-            ->reject(fn ($gameId) => $gameId == $this->game->id)
-            ->values()
-            ->all();
-
-        $claim->save();
+        $this->gentool->delete();
 
         defer(fn () => broadcast(new PrivateClaimingEvent));
 

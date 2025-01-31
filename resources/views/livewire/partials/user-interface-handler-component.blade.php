@@ -1,3 +1,5 @@
+@use(Illuminate\Support\Facades\Route)
+
 <div>
     @script
         <script defer>
@@ -23,7 +25,9 @@
 
             Echo.private('Interface.{{ $this->user->id }}')
                 .listen('PrivateFoundClaimableComputerEvent', () => {
-                    Flux.modal('claim-computer-modal').show();
+                    if ('setting.page' != '{{ Route::currentRouteName() }}') {
+                        Flux.modal('claim-computer-modal').show();
+                    }
                 });
         </script>
     @endscript

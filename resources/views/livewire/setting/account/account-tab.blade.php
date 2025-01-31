@@ -3,6 +3,10 @@
 
     <flux:separator />
 
+    <livewire:setting.account.account-claim-component />
+
+    <flux:separator />
+
     <livewire:setting.account.account-password-component />
 
     <flux:separator />

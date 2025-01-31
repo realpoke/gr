@@ -1,8 +1,19 @@
 <div>
-    @if ($this->isClaming)
+    @if (! $this->user->canClaimMoreComputers())
         <div class="space-y-6">
             <div>
-                <flux:heading size="lg">{{ __('claim.start.heading') }}</flux:heading>
+                <flux:heading size="lg">{{ __('claim.full.heading') }} ({{ $this->user->claimCount() }}/{{ $this->maxClaims}})</flux:heading>
+                <flux:subheading>{{ __('claim.full.subheading') }}</flux:subheading>
+            </div>
+
+            <div>
+                <flux:button wire:navigate href="{{ route('setting.page') }}">{{ __('claim.full.action') }}</flux:button>
+            </div>
+        </div>
+    @elseif ($this->isClaming)
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">{{ __('claim.start.heading') }} ({{ $this->user->claimCount() }}/{{ $this->maxClaims}})</flux:heading>
                 <flux:subheading>{{ __('claim.search.subheading') }}</flux:subheading>
                 <flux:text>{{ __('claim.search.text', ['time' => $this->expiresAt->diffForHumans(parts: 2)]) }}</flux:text>
             </div>
@@ -30,7 +41,7 @@
                 private: $wire.entangle('form.private'),
         }">
             <div>
-                <flux:heading size="lg">{{ __('claim.start.heading') }}</flux:heading>
+                <flux:heading size="lg">{{ __('claim.start.heading') }} ({{ $this->user->claimCount() }}/{{ $this->maxClaims}})</flux:heading>
                 <flux:subheading>{{ __('claim.start.subheading') }}</flux:subheading>
                 <flux:text>{{ __('claim.start.text', ['time' => $this->within]) }}</flux:text>
             </div>
@@ -39,10 +50,8 @@
 
             <flux:checkbox wire:model="form.private" label="Is this your personal computer?" />
 
-            <div class="flex">
-                <flux:spacer />
-
-                <flux:button type="submit" variant="primary">{{ __('claim.start.action') }}</flux:button>
+            <div>
+                <flux:button type="submit">{{ __('claim.start.action') }}</flux:button>
             </div>
         </form>
     @endif
