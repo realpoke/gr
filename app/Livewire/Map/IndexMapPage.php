@@ -26,6 +26,9 @@ class IndexMapPage extends Component
     #[Url(except: 'all')]
     public $mode = 'all';
 
+    #[Url(except: '15')]
+    public $amount = '15';
+
     protected $sortableColumns = [
         'name',
         'plays',
@@ -41,8 +44,13 @@ class IndexMapPage extends Component
 
     public function mount()
     {
+        $amount = request()->get('amount');
+        if ($amount && ! ($amount == '15' || $amount == '25' || $amount == '50')) {
+            $this->reset('amount');
+        }
+
         $mode = request()->get('mode');
-        if (! $mode || ($mode !== 'all' && ! GameModeEnum::tryFrom($mode))) {
+        if ($mode && ($mode !== 'all' && ! GameModeEnum::tryFrom($mode))) {
             $this->reset('mode');
         }
 
@@ -81,7 +89,7 @@ class IndexMapPage extends Component
             ->when($this->search != '', fn ($q) => $q->search($this->search))
             ->when($this->verifiedOnly, fn ($q) => $q->where('verified_at', '!=', null))
             ->when($this->mode != 'all', fn ($q) => $q->whereJsonContains('modes', $this->mode))
-            ->paginate();
+            ->paginate($this->amount);
     }
 
     #[Computed()]

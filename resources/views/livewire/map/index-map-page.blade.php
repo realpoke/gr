@@ -1,6 +1,14 @@
 <div class="space-y-6">
-    <div class="flex gap-4">
-        <flux:input class="sm:max-w-80 w-full" :clearable="!empty($this->search)" wire:model.live.debounce="search" icon="magnifying-glass" placeholder="{{ __('label.search') }}" />
+    <div class="flex sm:flex-row flex-col gap-4">
+        <flux:input.group class="sm:max-w-80 w-full">
+            <flux:input :clearable="!empty($this->search)" wire:model.live.debounce="search" icon="magnifying-glass" placeholder="{{ __('label.search') }}" />
+
+            <flux:select wire:model.live="amount" class="max-w-fit" variant="listbox">
+                <flux:option value="15">15</flux:option>
+                <flux:option value="25">25</flux:option>
+                <flux:option value="50">50</flux:option>
+            </flux:select>
+        </flux:input.group>
 
         <flux:input.group class="w-auto">
             <flux:tooltip content="{{ __('tooltip.filters') }}">

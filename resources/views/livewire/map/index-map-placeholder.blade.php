@@ -1,5 +1,5 @@
 <div class="space-y-6">
-    <div class="flex gap-4 flex-row">
+    <div class="flex gap-4 sm:flex-row flex-col">
         <flux:input disabled class="sm:max-w-80" icon="loading" placeholder="{{ __('label.loading') }}" />
         <flux:input.group class="w-auto">
             <flux:button disabled square icon="adjustments-horizontal" />
