@@ -21,6 +21,7 @@ class SettingPage extends Component
     private static array $tabs = [
         'account',
         'profile',
+        'friends',
         'supporter',
         'billing',
     ];

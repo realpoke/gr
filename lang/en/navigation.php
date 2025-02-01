@@ -20,4 +20,5 @@ return [
     'supporter' => 'Supporter',
     'billing' => 'Billing',
     'my-profile' => 'My Profile',
+    'friends' => 'Friends',
 ];
