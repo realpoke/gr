@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\Game\GameModeEnum;
 use App\Enums\Rank\RankTimeFrameEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -25,5 +26,14 @@ class Period extends Model
     public function stats(): HasMany
     {
         return $this->hasMany(Stat::class);
+    }
+
+    public function scopeFromGameModeAndTimeFrame(
+        Builder $query,
+        GameModeEnum $gameMode,
+        RankTimeFrameEnum $timeFrame
+    ): Builder {
+        return $query->where('game_mode', $gameMode->value)
+            ->where('rank_time_frame', $timeFrame->value);
     }
 }
