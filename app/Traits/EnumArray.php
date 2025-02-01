@@ -14,6 +14,14 @@ trait EnumArray
         return array_column(self::cases(), 'value');
     }
 
+    public static function ccases(array $cases): array
+    {
+        return collect($cases)
+            ->map(fn ($case) => $case->value)
+            ->filter()
+            ->toArray();
+    }
+
     public static function array(): array
     {
         return array_combine(self::values(), self::names());
