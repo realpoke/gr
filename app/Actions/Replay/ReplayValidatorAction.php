@@ -52,7 +52,7 @@ class ReplayValidatorAction extends BaseAction
 
     private function longEnough(): ?string
     {
-        if ($this->parser->getMetaData()['gameInterval']->totalSeconds < $this->minimumGameInterval()->totalSeconds) {
+        if ($this->parser->getMetaData()['gameInterval'] < $this->minimumGameInterval()->totalSeconds) {
             return 'Game interval is too short, must be minimum lenght to count. Interval is: '.$this->parser->getMetaData()['gameInterval']->format('%H:%I:%S');
         }
 

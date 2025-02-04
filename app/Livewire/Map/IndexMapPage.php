@@ -7,11 +7,13 @@ use App\Models\Map;
 use App\Traits\WithSortable;
 use Flux\Flux;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Lazy;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Lazy()]
 #[Title('title.maps')]
 class IndexMapPage extends Component
 {

@@ -61,8 +61,8 @@ class Game extends Model
 
     public function scopeSearch(Builder $query, string $searchTerm): Builder
     {
-        return $query->whereLike([
-            'hash',
-        ], $searchTerm);
+        return $query->WhereRelation('users', fn ($q) => $q->whereAnyLike([
+            'username',
+        ], $searchTerm));
     }
 }

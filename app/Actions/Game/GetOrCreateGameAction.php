@@ -6,8 +6,11 @@ use App\Actions\BaseAction;
 use App\Actions\Map\AddMapPlayCountAction;
 use App\Actions\Map\GetOrCreateMapAction;
 use App\Actions\Map\VerifyMapAction;
+use App\Events\PublicGameCreatedEvent;
 use App\Models\Game;
 use Illuminate\Support\Collection;
+
+use function Illuminate\Support\defer;
 
 class GetOrCreateGameAction extends BaseAction
 {
@@ -49,6 +52,8 @@ class GetOrCreateGameAction extends BaseAction
             'data' => $this->allParserData['gameData'],
             'map_id' => $mapper->getMap()->id,
         ]);
+
+        defer(fn () => broadcast(new PublicGameCreatedEvent));
 
         $game->type = $this->allParserData['metaData']['gameType'];
         $saved = $game->save();

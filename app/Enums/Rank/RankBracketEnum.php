@@ -57,16 +57,16 @@ enum RankBracketEnum: string
     public function prettyName(bool $withRange = true): string
     {
         return match ($this) {
-            self::COMMANDER_IN_CHIEF => $withRange ? __('enum.commander-in-chief').' ('.self::COMMANDER_IN_CHIEF->eloRange()[0].'+)' : __('enum.commander-in-chief'),
-            self::GENERAL => $withRange ? __('enum.general').' ('.self::GENERAL->eloRange()[0].'-'.self::GENERAL->eloRange()[1].')' : __('enum.general'),
-            self::BRIGADIER_GENERAL => $withRange ? __('enum.brigadier-general').' ('.self::BRIGADIER_GENERAL->eloRange()[0].'-'.self::BRIGADIER_GENERAL->eloRange()[1].')' : __('enum.brigadier-general'),
-            self::COLONEL => $withRange ? __('enum.colonel').' ('.self::COLONEL->eloRange()[0].'-'.self::COLONEL->eloRange()[1].')' : __('enum.colonel'),
-            self::MAJOR => $withRange ? __('enum.major').' ('.self::MAJOR->eloRange()[0].'-'.self::MAJOR->eloRange()[1].')' : __('enum.major'),
-            self::CAPTAIN => $withRange ? __('enum.captain').' ('.self::CAPTAIN->eloRange()[0].'-'.self::CAPTAIN->eloRange()[1].')' : __('enum.captain'),
-            self::LIEUTENANT => $withRange ? __('enum.lieutenant').' ('.self::LIEUTENANT->eloRange()[0].'-'.self::LIEUTENANT->eloRange()[1].')' : __('enum.lieutenant'),
-            self::SERGEANT => $withRange ? __('enum.sergeant').' ('.self::SERGEANT->eloRange()[0].'-'.self::SERGEANT->eloRange()[1].')' : __('enum.sergeant'),
-            self::CORPORAL => $withRange ? __('enum.corporal').' ('.self::CORPORAL->eloRange()[0].'-'.self::CORPORAL->eloRange()[1].')' : __('enum.corporal'),
-            self::PRIVATE => $withRange ? __('enum.private').' ('.self::PRIVATE->eloRange()[0].'-'.self::PRIVATE->eloRange()[1].')' : __('enum.private'),
+            self::COMMANDER_IN_CHIEF => $withRange ? __('enum.bracket.commander-in-chief').' ('.self::COMMANDER_IN_CHIEF->eloRange()[0].'+)' : __('enum.bracket.commander-in-chief'),
+            self::GENERAL => $withRange ? __('enum.bracket.general').' ('.self::GENERAL->eloRange()[0].'-'.self::GENERAL->eloRange()[1].')' : __('enum.bracket.general'),
+            self::BRIGADIER_GENERAL => $withRange ? __('enum.bracket.brigadier-general').' ('.self::BRIGADIER_GENERAL->eloRange()[0].'-'.self::BRIGADIER_GENERAL->eloRange()[1].')' : __('enum.bracket.brigadier-general'),
+            self::COLONEL => $withRange ? __('enum.bracket.colonel').' ('.self::COLONEL->eloRange()[0].'-'.self::COLONEL->eloRange()[1].')' : __('enum.bracket.colonel'),
+            self::MAJOR => $withRange ? __('enum.bracket.major').' ('.self::MAJOR->eloRange()[0].'-'.self::MAJOR->eloRange()[1].')' : __('enum.bracket.major'),
+            self::CAPTAIN => $withRange ? __('enum.bracket.captain').' ('.self::CAPTAIN->eloRange()[0].'-'.self::CAPTAIN->eloRange()[1].')' : __('enum.bracket.captain'),
+            self::LIEUTENANT => $withRange ? __('enum.bracket.lieutenant').' ('.self::LIEUTENANT->eloRange()[0].'-'.self::LIEUTENANT->eloRange()[1].')' : __('enum.bracket.lieutenant'),
+            self::SERGEANT => $withRange ? __('enum.bracket.sergeant').' ('.self::SERGEANT->eloRange()[0].'-'.self::SERGEANT->eloRange()[1].')' : __('enum.bracket.sergeant'),
+            self::CORPORAL => $withRange ? __('enum.bracket.corporal').' ('.self::CORPORAL->eloRange()[0].'-'.self::CORPORAL->eloRange()[1].')' : __('enum.bracket.corporal'),
+            self::PRIVATE => $withRange ? __('enum.bracket.private').' ('.self::PRIVATE->eloRange()[0].'-'.self::PRIVATE->eloRange()[1].')' : __('enum.bracket.private'),
             default => ucfirst(str_replace('-', ' ', $this->value)),
         };
     }

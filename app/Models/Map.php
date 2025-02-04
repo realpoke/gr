@@ -50,7 +50,7 @@ class Map extends Model
 
     public function scopeSearch(Builder $query, string $searchTerm): Builder
     {
-        return $query->whereLike([
+        return $query->whereAnyLike([
             'hash',
             'name',
             'id',

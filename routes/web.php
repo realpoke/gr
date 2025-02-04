@@ -18,9 +18,9 @@ Route::get('/document/{document}', MarkdownPage::class)->name('document.page');
 Route::get('/leaderboard', IndexLeaderboardPage::class)->name('index.leaderboard.page');
 
 Route::get('/games', IndexGamePage::class)->name('index.game.page');
-Route::get('/game/{hash}', ShowGamePage::class)->name('show.game.page');
+Route::get('/game/{game:hash}', ShowGamePage::class)->name('show.game.page');
 
-Route::get('/maps', IndexMapPage::class)->name('index.map.page')->lazy();
+Route::get('/maps', IndexMapPage::class)->name('index.map.page');
 
 Route::get('/profile/{user}', ShowProfilePage::class)->name('show.profile.page');
 

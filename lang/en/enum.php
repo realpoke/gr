@@ -56,4 +56,16 @@ return [
         'gla-stealth' => 'GLA Stealth',
         'unknown' => 'Unknown',
     ],
+    'bracket' => [
+        'commander-in-chief' => 'Commander in Chief',
+        'general' => 'General',
+        'brigadier-general' => 'Brigadier General',
+        'colonel' => 'Colonel',
+        'major' => 'Major',
+        'captain' => 'Captain',
+        'lieutenant' => 'Lieutenant',
+        'sergeant' => 'Sergeant',
+        'corporal' => 'Corporal',
+        'private' => 'Private',
+    ],
 ];

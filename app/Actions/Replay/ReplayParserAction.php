@@ -8,7 +8,6 @@ use App\Enums\FactionEnum;
 use App\Enums\Game\GameTypeEnum;
 use App\Enums\PlayerTypeEnum;
 use App\Enums\SideEnum;
-use Carbon\CarbonInterval;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
@@ -249,7 +248,7 @@ class ReplayParserAction extends BaseAction
             'playersPlaying' => $playersPlaying,
             'hasBots' => $hasBots,
             'gameType' => $this->determinGameType($this->players->toArray()),
-            'gameInterval' => CarbonInterval::seconds($data['Header']['NumTimeStamps'] / 15),
+            'gameInterval' => (int) ($data['Header']['NumTimeStamps'] / 15),
         ]);
     }
 

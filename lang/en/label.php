@@ -33,4 +33,12 @@ return [
     'new' => 'New',
     'id' => 'Identifier',
     'claimed-at' => 'Claimed At',
+    'no-games' => 'No Games found.',
+    'map' => 'Map',
+    'game-type' => 'Game Type',
+    'status' => 'Status',
+    'bracket' => 'Bracket',
+    'placeholder' => [
+        'map' => 'Search Map',
+    ],
 ];

@@ -9,3 +9,4 @@ Broadcast::channel('Interface.{id}', function (User $user, $id) {
 
 Broadcast::channel('Public.Interface', function () {});
 Broadcast::channel('Public.Map', function () {});
+Broadcast::channel('Public.Game', function () {});

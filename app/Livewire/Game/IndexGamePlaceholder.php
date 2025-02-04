@@ -2,12 +2,11 @@
 
 namespace App\Livewire\Game;
 
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
+#[Lazy()]
 class IndexGamePlaceholder extends Component
 {
-    public function render()
-    {
-        return view('livewire.game.index-game-placeholder');
-    }
+    //
 }

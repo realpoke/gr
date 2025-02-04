@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Builder::macro('whereLike', function (string|array $attributes, string $searchTerm): Builder {
+        Builder::macro('whereAnyLike', function (string|array $attributes, string $searchTerm): Builder {
             return $this->where(function (Builder $query) use ($attributes, $searchTerm): void {
                 foreach (Arr::wrap($attributes) as $attribute) {
                     $query->when(

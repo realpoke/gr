@@ -5,9 +5,12 @@ namespace App\Actions\Game;
 use App\Actions\BaseAction;
 use App\Actions\Replay\ReplayParserAction;
 use App\Enums\Game\GameStatusEnum;
+use App\Events\PublicGameStatusUpdatedEvent;
 use App\Models\Game;
 use App\Models\Gentool;
 use App\Models\User;
+
+use function Illuminate\Support\defer;
 
 class SetupGameAction extends BaseAction
 {
@@ -83,6 +86,8 @@ class SetupGameAction extends BaseAction
         if ($this->playingPlayersCount === $this->uploadedPlayingPlayersCount + 1) {
             $game->status = GameStatusEnum::PROCESSING;
             $saved = $game->save();
+
+            defer(fn () => broadcast(new PublicGameStatusUpdatedEvent($game->id)));
             if (! $saved) {
                 return $this->setFailed('Failed to save new game status');
             }

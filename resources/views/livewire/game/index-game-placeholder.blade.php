@@ -1,12 +1,25 @@
 <div class="space-y-6">
-    <div class="flex gap-4 flex-row">
-        <flux:input disabled class="sm:max-w-80" icon="loading" placeholder="{{ __('label.loading') }}" />
-        <flux:input.group class="w-auto">
+    <div class="flex gap-4 sm:flex-row flex-col sm:items-center items-start">
+        <flux:input.group class="sm:max-w-80 w-full">
+            <flux:input disabled icon="loading" placeholder="{{ __('label.loading') }}" />
+
+            <flux:select disabled class="max-w-fit" variant="listbox">
+                <flux:option selected>00</flux:option>
+            </flux:select>
+        </flux:input.group>
+
+        <flux:input.group class="!w-fit">
             <flux:button disabled square icon="adjustments-horizontal" />
         </flux:input.group>
+
+        <flux:switch disabled checked label="Live" />
     </div>
 
     <flux:separator text="{{ __('navigation.games') }}" />
+
+    <div class="flex items-start justify-center p-2">
+        <livewire:partials.awaiting-badge-component text="Live Games" />
+    </div>
 
     <flux:card>
         <flux:table>
@@ -35,9 +48,9 @@
                 @endfor
             </flux:rows>
         </flux:table>
-        <div class="flex justify-between mt-4 gap-1 flex-col md:flex-row">
-            <flux:input disabled size="xs" class="md:max-w-44 w-full" />
-            <flux:input disabled size="xs" class="md:max-w-64 w-full" />
+        <div class="flex justify-between mt-4 gap-1 flex-row">
+            <flux:spacer />
+            <flux:input disabled size="xs" class="max-w-12" />
         </div>
     </flux:card>
 </div>

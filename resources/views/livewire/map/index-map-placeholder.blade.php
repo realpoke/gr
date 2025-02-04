@@ -1,6 +1,13 @@
 <div class="space-y-6">
     <div class="flex gap-4 sm:flex-row flex-col">
-        <flux:input disabled class="sm:max-w-80" icon="loading" placeholder="{{ __('label.loading') }}" />
+        <flux:input.group class="sm:max-w-80 w-full">
+            <flux:input disabled icon="loading" placeholder="{{ __('label.loading') }}" />
+
+            <flux:select disabled class="max-w-fit" variant="listbox">
+                <flux:option selected>00</flux:option>
+            </flux:select>
+        </flux:input.group>
+
         <flux:input.group class="w-auto">
             <flux:button disabled square icon="adjustments-horizontal" />
         </flux:input.group>
