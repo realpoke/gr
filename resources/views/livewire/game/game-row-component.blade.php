@@ -44,4 +44,13 @@
     <flux:cell><flux:badge :color="$game->status->getStatusBadgeColor()" size="sm" inset="top bottom">{{ ucfirst($game->status->value) ?? '...' }}</flux:badge></flux:cell>
     <flux:cell>{{ CarbonInterval::seconds($this->game->data['metaData']['gameInterval'])->cascade()->forHumans(['short' => true]) }}</flux:cell>
     <flux:cell>{{ $this->game->created_at->diffForHumans(['short' => true]) }}</flux:cell>
+    <flux:cell>
+        <flux:dropdown class="flex items-center">
+            <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" inset="top bottom"></flux:button>
+
+            <flux:menu>
+                <flux:menu.item wire:navigate href="{{ $game->page() }}" icon="swords">{{ __('navigation.game-details') }}</flux:menu.item>
+            </flux:menu>
+        </flux:dropdown>
+    </flux:cell>
 </flux:row>

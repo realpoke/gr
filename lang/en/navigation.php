@@ -21,4 +21,6 @@ return [
     'billing' => 'Billing',
     'my-profile' => 'My Profile',
     'friends' => 'Friends',
+    'game-details' => 'Game Details',
+    'games-on-map' => 'Show Games on Map',
 ];

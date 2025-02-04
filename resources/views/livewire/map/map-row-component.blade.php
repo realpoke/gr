@@ -119,4 +119,13 @@ x-init="
     </flux:cell>
     <flux:cell>{{ $this->map->updated_at->diffForHumans(['short' => true]) }}</flux:cell>
     <flux:cell>{{ $this->map->created_at->diffForHumans(['short' => true]) }}</flux:cell>
+    <flux:cell>
+        <flux:dropdown class="flex items-center">
+            <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" inset="top bottom"></flux:button>
+
+            <flux:menu>
+                <flux:menu.item wire:navigate href="{{ route('index.game.page', ['map' => $this->map->id]) }}" icon="swords">{{ __('navigation.games-on-map') }}</flux:menu.item>
+            </flux:menu>
+        </flux:dropdown>
+    </flux:cell>
 </flux:row>
