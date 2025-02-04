@@ -89,4 +89,9 @@ enum FactionEnum: int
     {
         return $this->value >= -1;
     }
+
+    public function isObserver(): bool
+    {
+        return $this->value === -2;
+    }
 }

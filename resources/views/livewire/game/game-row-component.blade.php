@@ -41,7 +41,7 @@
             <flux:icon.minus variant="mini" inset="top bottom" />
         @endif
     </flux:cell>
-    <flux:cell><flux:badge :color="$game->status->getStatusBadgeColor()" size="sm" inset="top bottom">{{ ucfirst($game->status->value) ?? '...' }}</flux:badge></flux:cell>
+    <flux:cell><flux:badge :color="$game->status->getStatusBadgeColor()" size="sm" inset="top bottom">{{ $game->status->prettyName() }}</flux:badge></flux:cell>
     <flux:cell>{{ CarbonInterval::seconds($this->game->data['metaData']['gameInterval'])->cascade()->forHumans(['short' => true]) }}</flux:cell>
     <flux:cell>{{ $this->game->created_at->diffForHumans(['short' => true]) }}</flux:cell>
     <flux:cell>
