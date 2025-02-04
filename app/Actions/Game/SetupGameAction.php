@@ -22,6 +22,8 @@ class SetupGameAction extends BaseAction
 
     private int $uploadedPlayingPlayersCount;
 
+    private bool $allPlayersUploaded = false;
+
     public function getGame(): Game
     {
         return $this->game;
@@ -50,7 +52,7 @@ class SetupGameAction extends BaseAction
         $game = $gameGetter->getGame();
         $this->setAllPlayersUploaded($game);
 
-        if ($this->playingPlayersCount === $this->uploadedPlayingPlayersCount) {
+        if ($this->allPlayersUploaded) {
             return $this->setFailed('All players already uploaded');
         }
 
@@ -78,12 +80,23 @@ class SetupGameAction extends BaseAction
             return $this->setFailed('Failed to update game importantOrders: '.$gameImportantOrdersUpdater->getErrorMessage());
         }
 
+        $playerName = $this->parser->getReplayOwnerName();
+
         $game->users()->attach($this->replayUserOwner, [
-            'player_name' => $this->parser->getReplayOwnerName(),
+            'player_name' => $playerName,
             'gentool_id' => $this->gentool->id,
         ]);
 
-        if ($this->playingPlayersCount === $this->uploadedPlayingPlayersCount + 1) {
+        $isPlaying = collect($game->data['players'])
+            ->where('isPlaying', true)
+            ->pluck('name')
+            ->contains($playerName);
+
+        if ($isPlaying) {
+            $this->uploadedPlayingPlayersCount++;
+        }
+
+        if ($this->playingPlayersCount === $this->uploadedPlayingPlayersCount) {
             $game->status = GameStatusEnum::PROCESSING;
             $saved = $game->save();
 
@@ -101,15 +114,19 @@ class SetupGameAction extends BaseAction
 
     private function setAllPlayersUploaded(Game $game): void
     {
-        $playingPlayers = collect($game->data['players'])->filter(function ($player) {
-            return $player['isPlaying'];
-        });
+        $playingPlayers = collect($game->data['players'])
+            ->where('isPlaying', true)
+            ->pluck('name')
+            ->unique();
 
         $uploadedPlayingPlayers = $game->users()
-            ->whereIn('player_name', $playingPlayers->pluck('name'))
-            ->count();
+            ->whereIn('player_name', $playingPlayers)
+            ->pluck('player_name')
+            ->unique();
 
         $this->playingPlayersCount = $playingPlayers->count();
-        $this->uploadedPlayingPlayersCount = $uploadedPlayingPlayers;
+        $this->uploadedPlayingPlayersCount = $uploadedPlayingPlayers->count();
+
+        $this->allPlayersUploaded = $uploadedPlayingPlayers->count() === $playingPlayers->count();
     }
 }
