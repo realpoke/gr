@@ -5,7 +5,7 @@ return [
     'play-count' => 'Play Count',
     'monthly' => 'Monthly',
     'weekly' => 'Weekly',
-    'game-type' => 'Game Type',
+    'game-types' => 'Game Types',
     'verified-at' => 'Verified',
     'added-at' => 'Added',
     'last-played' => 'Last Played',

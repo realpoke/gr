@@ -38,6 +38,7 @@ class IndexMapPage extends Component
         'plays_weekly',
         'updated_at',
         'created_at',
+        'verified_at',
     ];
 
     protected $defaultSortBy = 'plays';

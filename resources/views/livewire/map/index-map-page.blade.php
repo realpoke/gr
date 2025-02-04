@@ -58,11 +58,11 @@
         <flux:table :paginate="$this->maps">
             <flux:columns>
                 <flux:column sortable :sorted="$sortBy === 'name'" :direction="$sortDirection" wire:click="sort('name')">{{ __('column.name') }}</flux:column>
-                <flux:column>{{ __('column.game-type') }}</flux:column>
+                <flux:column>{{ __('column.game-types') }}</flux:column>
                 <flux:column sortable :sorted="$sortBy === 'plays'" :direction="$sortDirection" wire:click="sort('plays')">{{ __('column.play-count') }}</flux:column>
                 <flux:column sortable :sorted="$sortBy === 'plays_monthly'" :direction="$sortDirection" wire:click="sort('plays_monthly')">{{ __('column.monthly') }}</flux:column>
                 <flux:column sortable :sorted="$sortBy === 'plays_weekly'" :direction="$sortDirection" wire:click="sort('plays_weekly')">{{ __('column.weekly') }}</flux:column>
-                <flux:column>{{ __('column.verified-at') }}</flux:column>
+                <flux:column sortable :sorted="$sortBy === 'verified_at'" :direction="$sortDirection" wire:click="sort('verified_at')">{{ __('column.verified-at') }}</flux:column>
                 <flux:column sortable :sorted="$sortBy === 'updated_at'" :direction="$sortDirection" wire:click="sort('updated_at')">{{ __('column.last-played') }}</flux:column>
                 <flux:column sortable :sorted="$sortBy === 'created_at'" :direction="$sortDirection" wire:click="sort('created_at')">{{ __('column.added-at') }}</flux:column>
             </flux:columns>
