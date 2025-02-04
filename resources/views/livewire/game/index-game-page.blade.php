@@ -47,6 +47,16 @@
             </flux:field>
 
             <flux:field>
+                <flux:label>{{ __('label.bracket') }}</flux:label>
+                <flux:select variant="listbox" wire:model="bracket">
+                    <flux:option value="all">{{ __('option.all-rank-brackets') }}</flux:option>
+                    @foreach (RankBracketEnum::cases() as $rankBracketEnum)
+                        <flux:option value="{{ $rankBracketEnum }}">{{ $rankBracketEnum->prettyName() }}</flux:option>
+                    @endforeach
+                </flux:select>
+            </flux:field>
+
+            <flux:field>
                 <flux:label>{{ __('label.game-type') }}</flux:label>
                 <flux:select variant="listbox" wire:model="type">
                     <flux:option value="all">{{ __('option.all-types') }}</flux:option>
@@ -63,16 +73,6 @@
                         <flux:checkbox value="{{ $gameStatusEnum }}" label="{{ $gameStatusEnum->prettyName() }}"/>
                     @endforeach
                 </flux:checkbox.group>
-            </flux:field>
-
-            <flux:field>
-                <flux:label>{{ __('label.bracket') }}</flux:label>
-                <flux:select variant="listbox" wire:model="bracket">
-                    <flux:option value="all">{{ __('option.all-rank-brackets') }}</flux:option>
-                    @foreach (RankBracketEnum::cases() as $rankBracketEnum)
-                        <flux:option value="{{ $rankBracketEnum }}">{{ $rankBracketEnum->prettyName() }}</flux:option>
-                    @endforeach
-                </flux:select>
             </flux:field>
 
             <flux:text wire:dirty>{{ __('label.filters-not-applied') }}</flux:text>
