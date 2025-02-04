@@ -6,4 +6,5 @@ return [
     'filters' => 'Filters',
     'latest-game' => 'This will always show the latest game.',
     'email-required' => 'Email needs to be verified.',
+    'game-player-as' => ':name as :faction',
 ];

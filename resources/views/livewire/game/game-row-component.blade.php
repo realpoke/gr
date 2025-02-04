@@ -32,7 +32,7 @@
         @if (count($this->game['data']['players']) > 0)
             <div class="flex -space-x-2 overflow-hidden">
                 @foreach ($this->game['data']['players'] as $player)
-                    <flux:tooltip content="{{ $player['name'] }} as {{ FactionEnum::tryFrom($player['faction'])->getSide()->prettyName() }}">
+                    <flux:tooltip content="{{ __('tooltip.game-player-as', ['name' => $player['name'], 'faction' => FactionEnum::tryFrom($player['faction'])->getSide()->prettyName()]) }}">
                         <flux:avatar class="border-x-2 dark:border-zinc-700 border-white bg-white" size="xs"/>
                     </flux:tooltip>
                 @endforeach
