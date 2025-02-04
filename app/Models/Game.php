@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\Game\GameStatusEnum;
 use App\Enums\Game\GameTypeEnum;
+use App\Enums\Rank\RankBracketEnum;
 use App\Models\Pivots\GameUserPivot;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,8 @@ class Game extends Model
         'type',
         'data',
         'map_id',
+        'bracket',
+        'elo_average',
     ];
 
     public function casts(): array
@@ -27,6 +30,7 @@ class Game extends Model
         return [
             'status' => GameStatusEnum::class,
             'type' => GameTypeEnum::class,
+            'bracket' => RankBracketEnum::class,
             'data' => 'array',
         ];
     }
@@ -39,6 +43,11 @@ class Game extends Model
     public function getWinnersAttribute(): Collection
     {
         return $this->users->where('pivot.winner', true);
+    }
+
+    public function getLengthAttribute(): int
+    {
+        return $this->data['metaData']['gameInterval'] ?? 0;
     }
 
     public function users(): BelongsToMany

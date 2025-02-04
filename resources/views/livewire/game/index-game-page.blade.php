@@ -99,13 +99,13 @@
         <flux:table :paginate="$this->games">
             <flux:columns>
                 <flux:column>{{ __('column.map') }}</flux:column>
-                <flux:column>{{ __('column.average-elo') }}</flux:column>
-                <flux:column>{{ __('column.type') }}</flux:column>
+                <flux:column sortable :sorted="$sortBy === 'elo_average'" :sort-direction="$sortDirection" wire:click="sort('elo_average')">{{ __('column.average-elo') }}</flux:column>
+                <flux:column sortable :sorted="$sortBy === 'type'" :sort-direction="$sortDirection" wire:click="sort('type')">{{ __('column.type') }}</flux:column>
                 <flux:column>{{ __('column.winners') }}</flux:column>
                 <flux:column>{{ __('column.players') }}</flux:column>
-                <flux:column>{{ __('column.status') }}</flux:column>
-                <flux:column>{{ __('column.game-length') }}</flux:column>
-                <flux:column>{{ __('column.played-at') }}</flux:column>
+                <flux:column sortable :sorted="$sortBy === 'status'" :sort-direction="$sortDirection" wire:click="sort('status')">{{ __('column.status') }}</flux:column>
+                <flux:column sortable :sorted="$sortBy === 'length'" :sort-direction="$sortDirection" wire:click="sort('length')">{{ __('column.game-length') }}</flux:column>
+                <flux:column sortable :sorted="$sortBy === 'created_at'" :sort-direction="$sortDirection" wire:click="sort('created_at')">{{ __('column.played-at') }}</flux:column>
             </flux:columns>
 
             <flux:rows>

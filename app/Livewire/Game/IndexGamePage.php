@@ -53,7 +53,11 @@ class IndexGamePage extends Component
     ];
 
     protected $sortableColumns = [
-        'name',
+        'elo_average',
+        'type',
+        'status',
+        'length',
+        'created_at',
     ];
 
     protected $defaultSortBy = 'created_at';
