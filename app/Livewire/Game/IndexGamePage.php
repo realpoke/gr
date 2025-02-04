@@ -79,30 +79,35 @@ class IndexGamePage extends Component
 
     public function mount()
     {
-        $amount = request()->get('amount');
-        if ($amount && ! ($amount == '15' || $amount == '25' || $amount == '50')) {
+        $live = $this->live;
+        if (! is_bool($live)) {
+            $this->reset('live');
+        }
+
+        $amount = $this->amount;
+        if (! ($amount == '15' || $amount == '25' || $amount == '50')) {
             $this->reset('amount');
         }
 
-        $map = request()->get('map');
-        if (! $map || ! Map::where('id', $map)->exists()) {
+        $map = $this->map;
+        if ($map != '' && ! Map::find($map)->exists()) {
             $this->reset('map');
         }
 
-        $type = request()->get('type');
-        if (! $type || ! GameTypeEnum::tryFrom($type)) {
+        $type = $this->type;
+        if ($type != 'all' && ! GameTypeEnum::tryFrom($type)) {
             $this->reset('type');
         }
 
-        $statuses = request()->get('statuses');
-        if ($statuses && is_array($statuses)) {
+        $statuses = $this->statuses;
+        if (is_array($statuses)) {
             $this->statuses = array_filter($statuses, function ($value) {
                 return GameStatusEnum::tryFrom($value) !== null;
             });
         }
 
-        $bracket = request()->get('bracket');
-        if (! $bracket || ! RankBracketEnum::tryFrom($bracket)) {
+        $bracket = $this->bracket;
+        if ($bracket != 'all' && ! RankBracketEnum::tryFrom($bracket)) {
             $this->reset('bracket');
         }
     }

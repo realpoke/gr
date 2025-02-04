@@ -47,18 +47,18 @@ class IndexMapPage extends Component
 
     public function mount()
     {
-        $amount = request()->get('amount');
-        if ($amount && ! ($amount == '15' || $amount == '25' || $amount == '50')) {
+        $amount = $this->amount;
+        if (! ($amount == '15' || $amount == '25' || $amount == '50')) {
             $this->reset('amount');
         }
 
-        $mode = request()->get('mode');
-        if ($mode && ($mode !== 'all' && ! GameModeEnum::tryFrom($mode))) {
+        $mode = $this->mode;
+        if ($mode != 'all' && ! GameModeEnum::tryFrom($mode)) {
             $this->reset('mode');
         }
 
-        $verifiedOnly = request()->get('verifiedOnly');
-        if ($verifiedOnly !== 'true') {
+        $verifiedOnly = $this->verifiedOnly;
+        if (! is_bool($verifiedOnly)) {
             $this->reset('verifiedOnly');
         }
     }
