@@ -4,6 +4,7 @@ namespace App\Actions\Replay;
 
 use App\Actions\BaseAction;
 use App\Traits\Rules\GameRules;
+use Carbon\CarbonInterval;
 
 class ReplayValidatorAction extends BaseAction
 {
@@ -53,7 +54,7 @@ class ReplayValidatorAction extends BaseAction
     private function longEnough(): ?string
     {
         if ($this->parser->getMetaData()['gameInterval'] < $this->minimumGameInterval()->totalSeconds) {
-            return 'Game interval is too short, must be minimum lenght to count. Interval is: '.$this->parser->getMetaData()['gameInterval']?->format('%H:%I:%S') ?? '00:00:00 (NULL)';
+            return 'Game interval is too short, must be minimum lenght to count. Interval is: '.CarbonInterval::seconds($this->parser->getMetaData()['gameInterval'] ?? 0)->format('%H:%I:%S');
         }
 
         return null;
