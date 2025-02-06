@@ -42,14 +42,10 @@ class StatAddGamePlayedAction extends BaseAction
         }
 
         $this->stat->win_percentage = (float) (($this->stat->wins / $this->stat->games) * 100);
+        $this->stat->last_game_at = now();
 
         if (! $this->stat->save()) {
             $this->setFailed('Failed to save stat: '.$this->stat->getErrorMessage());
-        }
-
-        $this->user->last_game_at = now();
-        if (! $this->user->save()) {
-            $this->setFailed('Failed to save user: '.$this->user->getErrorMessage());
         }
 
         return $this->setSuccessful();
