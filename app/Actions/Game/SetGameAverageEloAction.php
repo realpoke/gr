@@ -15,11 +15,11 @@ class SetGameAverageEloAction extends BaseAction
     public function execute(): self
     {
         $period = Period::getFirstOrCreateByGameModeAndTimeFrame($this->game->type->getGameMode(), RankTimeFrameEnum::ALL);
-        $eloAverage = $this->game->users->map(function ($user) use ($period) {
+        $eloAverage = (int) round($this->game->users->map(function ($user) use ($period) {
             $stats = $user->getOrCreateCurrentStatsForPeriod($period);
 
             return $stats->elo;
-        })->avg();
+        })->avg());
 
         $this->game->update([
             'elo_average' => $eloAverage,
