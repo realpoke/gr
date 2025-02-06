@@ -3,10 +3,12 @@
 
 <flux:row>
     <flux:cell>{{ $this->game->map->name }}</flux:cell>
-    <flux:cell>
+    <flux:cell class="!py-0">
         @if ($this->game->elo_average)
-            {{ $this->game->elo_average }}
-            {{ $this->game->bracket->prettyName() }}
+            <div class="flex flex-row items-start xl:flex-col -gap-x-2">
+                <flux:text>{{ $this->game->elo_average }}</flux:text>
+                <flux:text size="sm">{{ $this->game->bracket->prettyName(withRange: false) }}</flux:text>
+            </div>
         @else
             <flux:icon.minus variant="mini" inset="top bottom" />
         @endif
@@ -42,8 +44,14 @@
         @endif
     </flux:cell>
     <flux:cell><flux:badge :color="$game->status->getStatusBadgeColor()" size="sm" inset="top bottom">{{ $game->status->prettyName() }}</flux:badge></flux:cell>
-    <flux:cell>{{ CarbonInterval::seconds($this->game->data['metaData']['gameInterval'])->cascade()->forHumans(['short' => true]) }}</flux:cell>
-    <flux:cell>{{ $this->game->created_at->diffForHumans(['short' => true]) }}</flux:cell>
+    <flux:cell>
+        <flux:text>{{ CarbonInterval::seconds($this->game->data['metaData']['gameInterval'])->cascade()->forHumans(['short' => true]) }}</flux:text>
+    </flux:cell>
+    <flux:cell>
+        <flux:tooltip position="left" content="{{ __('tooltip.game-created-at', ['time' => $this->game->created_at]) }}">
+            <flux:text>{{ $this->game->created_at->diffForHumans(['short' => true]) }}</flux:text>
+        </flux:tooltip>
+    </flux:cell>
     <flux:cell>
         <flux:dropdown class="flex items-center">
             <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" inset="top bottom"></flux:button>

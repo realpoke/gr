@@ -10,3 +10,5 @@ Schedule::job(new CleanStuffJob)->evenInMaintenanceMode()->dailyAt('05:00');
 
 Schedule::job(new CleanMapPlaysJob(monthly: true))->evenInMaintenanceMode()->monthly();
 Schedule::job(new CleanMapPlaysJob(weekly: true))->evenInMaintenanceMode()->weekly();
+
+// TODO: Create job that makes new periods each month and year

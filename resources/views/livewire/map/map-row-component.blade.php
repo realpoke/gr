@@ -117,8 +117,16 @@ x-init="
             <flux:icon.minus variant="mini" inset="top bottom" />
         @endif
     </flux:cell>
-    <flux:cell>{{ $this->map->updated_at->diffForHumans(['short' => true]) }}</flux:cell>
-    <flux:cell>{{ $this->map->created_at->diffForHumans(['short' => true]) }}</flux:cell>
+    <flux:cell>
+        <flux:tooltip position="left" content="{{ __('tooltip.map-updated-at', ['time' => $this->map->updated_at]) }}">
+            <flux:text>{{ $this->map->updated_at->diffForHumans(['short' => true]) }}</flux:text>
+        </flux:tooltip>
+    </flux:cell>
+    <flux:cell>
+        <flux:tooltip position="left" content="{{ __('tooltip.map-created-at', ['time' => $this->map->created_at]) }}">
+            <flux:text>{{ $this->map->created_at->diffForHumans(['short' => true]) }}</flux:text>
+        </flux:tooltip>
+    </flux:cell>
     <flux:cell>
         <flux:dropdown class="flex items-center">
             <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" inset="top bottom"></flux:button>
