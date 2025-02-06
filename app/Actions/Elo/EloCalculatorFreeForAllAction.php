@@ -20,7 +20,7 @@ class EloCalculatorFreeForAllAction extends BaseAction implements EloCalculatorC
     public function execute(): self
     {
         $users = $this->game->users;
-        $period = Period::fromGameModeAndTimeFrame($this->game->type->getGameMode(), RankTimeFrameEnum::ALL);
+        $period = Period::getFirstOrCreateByGameModeAndTimeFrame($this->game->type->getGameMode(), RankTimeFrameEnum::ALL);
 
         // Sort players by eliminated position (1 = first eliminated, highest number = winner)
         $sortedPlayers = $users->sortByDesc('pivot.eliminated_position')->values();

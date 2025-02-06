@@ -7,7 +7,6 @@ use App\Events\PrivateFoundClaimableComputerEvent;
 use App\Models\Claim;
 use App\Models\Game;
 use App\Models\Gentool;
-use Illuminate\Support\Facades\Log;
 
 use function Illuminate\Support\defer;
 
@@ -28,8 +27,7 @@ class AddCanClaimGameAction extends BaseAction
         if (! is_null($claim) && ! is_null($this->gentool)) {
             $claim->game_ids = array_unique(array_merge($claim->game_ids ?? [], [$this->game->id]));
             $claim->save();
-            Log::debug('User info broadcast stuff');
-            Log::debug($claim->user_id);
+
             defer(fn () => broadcast(new PrivateFoundClaimableComputerEvent($claim->user_id)));
         }
 

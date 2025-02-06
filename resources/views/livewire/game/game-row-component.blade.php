@@ -12,7 +12,7 @@
         @endif
     </flux:cell>
     <flux:cell>{{ $this->game->type->prettyName() }}</flux:cell>
-    <flux:cell>
+    <flux:cell class="!py-0">
         @if ($this->game->winners->count() > 0)
             <div class="flex -space-x-3">
                 <div class="flex -space-x-2 overflow-hidden">
@@ -33,7 +33,7 @@
             <div class="flex -space-x-2 overflow-hidden">
                 @foreach ($this->game['data']['players'] as $player)
                     <flux:tooltip content="{{ __('tooltip.game-player-as', ['name' => $player['name'], 'faction' => FactionEnum::tryFrom($player['faction'])->getSide()->prettyName()]) }}">
-                        <flux:avatar class="border-x-2 dark:border-zinc-700 border-white bg-white" size="xs"/>
+                        <flux:avatar class="border-2 dark:border-zinc-700 border-white bg-white" size="xs"/>
                     </flux:tooltip>
                 @endforeach
             </div>

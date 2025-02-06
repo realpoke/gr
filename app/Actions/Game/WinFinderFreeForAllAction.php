@@ -28,7 +28,9 @@ class WinFinderFreeForAllAction extends BaseAction implements WinFinderContract
     {
         $data = $game->data;
         $importantOrders = $data['importantOrders'];
-        $players = $data['players'];
+        $playingPlayers = collect($this->game->data['players'])
+            ->filter(fn ($player) => $player['isPlaying'])
+            ->toArray();
 
         $eliminationOrder = [];
         $winningPlayerName = null;
@@ -54,16 +56,16 @@ class WinFinderFreeForAllAction extends BaseAction implements WinFinderContract
         }
 
         // Update winners in game data
-        foreach ($players as $key => $player) {
-            $players[$key]['win'] = $player['name'] === $winningPlayerName;
+        foreach ($playingPlayers as $key => $player) {
+            $playingPlayers[$key]['win'] = $player['name'] === $winningPlayerName;
         }
 
-        $data['players'] = $players;
+        $data['players'] = $playingPlayers;
         $game->data = $data;
         $game->save();
 
         // Assign positions
-        $totalPlayers = count($players);
+        $totalPlayers = count($playingPlayers);
         $positions = [];
 
         // Winner gets highest position

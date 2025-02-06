@@ -41,8 +41,8 @@ class IndexGamePage extends Component
     #[Url(except: 'all')]
     public $type = 'all';
 
-    #[Url(except: ['ranked'])]
-    public $statuses = ['ranked'];
+    #[Url(except: ['awaiting', 'processing', 'ranked', 'unranked'])]
+    public $statuses = ['awaiting', 'processing', 'ranked', 'unranked'];
 
     #[Url(except: 'all')]
     public $bracket = 'all';
@@ -69,6 +69,7 @@ class IndexGamePage extends Component
         return view('livewire.game.index-game-placeholder');
     }
 
+    // TODO: Check if this game is in the filter/search and add it to the games list
     #[On('echo:Public.Game,PublicGameCreatedEvent')]
     public function refreshTable()
     {
@@ -157,7 +158,7 @@ class IndexGamePage extends Component
     {
         return $this->map != '' ||
             $this->type != 'all' ||
-            $this->statuses != ['ranked'] ||
+            $this->statuses != ['awaiting', 'processing', 'ranked', 'unranked'] ||
             $this->bracket != 'all';
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Game\GameStatusEnum;
 use App\Enums\Game\GameTypeEnum;
 use App\Enums\Rank\RankBracketEnum;
+use App\Events\PublicGameStatusUpdatedEvent;
 use App\Models\Pivots\GameUserPivot;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -33,6 +34,15 @@ class Game extends Model
             'bracket' => RankBracketEnum::class,
             'data' => 'array',
         ];
+    }
+
+    public static function booted(): void
+    {
+        static::saving(function (Game $game) {
+            if ($game->isDirty('status')) {
+                broadcast(new PublicGameStatusUpdatedEvent($game->id));
+            }
+        });
     }
 
     public function page(): string
@@ -70,7 +80,9 @@ class Game extends Model
 
     public function scopeSearch(Builder $query, string $searchTerm): Builder
     {
-        return $query->WhereRelation('users', fn ($q) => $q->whereAnyLike([
+        return $query->whereAnyLike([
+            'hash',
+        ], $searchTerm)->WhereRelation('users', fn ($q) => $q->whereAnyLike([
             'username',
         ], $searchTerm));
     }

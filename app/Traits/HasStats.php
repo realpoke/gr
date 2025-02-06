@@ -48,16 +48,10 @@ trait HasStats
         return $this->hasManyThrough(Period::class, Stat::class);
     }
 
-    public function scopeStatsForPeriod(Builder $query, Period $period): Builder
-    {
-        return $query->stats()->where('period_id', $period->id);
-    }
-
     public function getOrCreateCurrentStatsForPeriod(Period $period): Stat
     {
-        return $this->stats()->statsForPeriod($period)->first() ?? $this->stats()->create([
-            'period_id' => $period->id,
-        ]);
+        return $this->stats()->forPeriod($period)->first()
+            ?? $this->stats()->create(['period_id' => $period->id]);
     }
 
     public function giveElo(int $elo, ?Stat $stat, ?Period $period): bool
@@ -68,6 +62,16 @@ trait HasStats
     public function takeElo(int $elo, ?Stat $stat, ?Period $period): bool
     {
         return $this->changeElo(-abs($elo), $stat, $period);
+    }
+
+    public function giveEloToStat(int $elo, Stat $stat): bool
+    {
+        return $this->changeElo(abs($elo), stat: $stat);
+    }
+
+    public function takeEloFromStat(int $elo, Stat $stat): bool
+    {
+        return $this->changeElo(-abs($elo), stat: $stat);
     }
 
     public function removeStat(Stat $stat): bool
@@ -81,8 +85,8 @@ trait HasStats
 
     private function changeElo(
         int $eloChange,
-        ?Stat $stat,
-        ?Period $period,
+        ?Stat $stat = null,
+        ?Period $period = null,
     ): bool {
         if (is_null($stat) && is_null($period)) {
             throw new \RuntimeException('Must provide either stat or period');
@@ -94,7 +98,7 @@ trait HasStats
 
         $stat->lockForUpdate();
 
-        $oldElo = $stat->elo;
+        $oldElo = $stat->elo ?? 1500;
         $newElo = max(1, $oldElo + $eloChange);
 
         $stat->elo = $newElo;

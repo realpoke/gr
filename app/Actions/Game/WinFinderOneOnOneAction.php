@@ -17,8 +17,12 @@ class WinFinderOneOnOneAction extends BaseAction implements WinFinderContract
 
     public function execute(): self
     {
+        $playingPlayers = collect($this->game->data['players'])
+            ->filter(fn ($player) => $player['isPlaying'])
+            ->toArray();
+
         $winnerCount = 0;
-        foreach ($this->game->data['players'] as $player) {
+        foreach ($playingPlayers as $player) {
             if ($player['win']) {
                 $winnerCount++;
             }
@@ -37,20 +41,22 @@ class WinFinderOneOnOneAction extends BaseAction implements WinFinderContract
     {
         $data = $game->data;
         $importantOrders = $data['importantOrders'];
-        $players = $data['players'];
+        $playingPlayers = collect($this->game->data['players'])
+            ->filter(fn ($player) => $player['isPlaying'])
+            ->toArray();
 
-        foreach ($players as $key => $player) {
-            $players[$key]['win'] = false;
+        foreach ($playingPlayers as $key => $player) {
+            $playingPlayers[$key]['win'] = false;
         }
 
         foreach ($importantOrders as $order) {
             if ($order['OrderName'] === 'Surrender') {
                 $surrenderedPlayerName = $order['PlayerName'];
-                foreach ($players as $key => $player) {
-                    $players[$key]['win'] = $player['name'] !== $surrenderedPlayerName;
+                foreach ($playingPlayers as $key => $player) {
+                    $playingPlayers[$key]['win'] = $player['name'] !== $surrenderedPlayerName;
                 }
 
-                $data['players'] = $players;
+                $data['players'] = $playingPlayers;
                 $game->data = $data;
                 $game->save();
 
@@ -70,11 +76,11 @@ class WinFinderOneOnOneAction extends BaseAction implements WinFinderContract
 
         if ($lastEndReplay) {
             $winningPlayerName = $lastEndReplay['PlayerName'];
-            foreach ($players as $key => $player) {
-                $players[$key]['win'] = $player['name'] === $winningPlayerName;
+            foreach ($playingPlayers as $key => $player) {
+                $playingPlayers[$key]['win'] = $player['name'] === $winningPlayerName;
             }
 
-            $data['players'] = $players;
+            $data['players'] = $playingPlayers;
             $game->data = $data;
             $game->save();
         }

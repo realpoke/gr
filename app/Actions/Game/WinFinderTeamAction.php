@@ -28,7 +28,9 @@ class WinFinderTeamAction extends BaseAction implements WinFinderContract
     {
         $data = $game->data;
         $importantOrders = $data['importantOrders'];
-        $players = $data['players'];
+        $playingPlayers = collect($this->game->data['players'])
+            ->filter(fn ($player) => $player['isPlaying'])
+            ->toArray();
 
         // Track surrendered players
         $surrenderedPlayers = [];
@@ -39,14 +41,14 @@ class WinFinderTeamAction extends BaseAction implements WinFinderContract
             if ($order['OrderName'] === 'Surrender') {
                 $surrenderedPlayerName = $order['PlayerName'];
                 $surrenderedPlayers[] = $surrenderedPlayerName;
-                $surrenderedTeam = $this->getPlayerTeam($players, $surrenderedPlayerName);
+                $surrenderedTeam = $this->getPlayerTeam($playingPlayers, $surrenderedPlayerName);
                 $teamSurrenders[$surrenderedTeam][] = $surrenderedPlayerName;
             }
         }
 
         // Get team members from players
         $teams = [];
-        foreach ($players as $player) {
+        foreach ($playingPlayers as $player) {
             $teams[$player['team']][] = $player['name'];
         }
 
@@ -72,11 +74,11 @@ class WinFinderTeamAction extends BaseAction implements WinFinderContract
 
             // The team that surrendered last wins
             if ($lastSurrender) {
-                $winningTeam = $this->getPlayerTeam($players, $lastSurrender['PlayerName']);
-                foreach ($players as $key => $player) {
-                    $players[$key]['win'] = ($player['team'] === $winningTeam);
+                $winningTeam = $this->getPlayerTeam($playingPlayers, $lastSurrender['PlayerName']);
+                foreach ($playingPlayers as $key => $player) {
+                    $playingPlayers[$key]['win'] = ($player['team'] === $winningTeam);
                 }
-                $data['players'] = $players;
+                $data['players'] = $playingPlayers;
                 $game->data = $data;
                 $game->save();
 
@@ -88,10 +90,10 @@ class WinFinderTeamAction extends BaseAction implements WinFinderContract
         foreach ($teams as $teamId => $teamMembers) {
             if (isset($teamSurrenders[$teamId]) && count($teamSurrenders[$teamId]) === count($teamMembers)) {
                 // This team has fully surrendered - other teams win
-                foreach ($players as $key => $player) {
-                    $players[$key]['win'] = $player['team'] !== $teamId;
+                foreach ($playingPlayers as $key => $player) {
+                    $playingPlayers[$key]['win'] = $player['team'] !== $teamId;
                 }
-                $data['players'] = $players;
+                $data['players'] = $playingPlayers;
                 $game->data = $data;
                 $game->save();
 
@@ -112,12 +114,12 @@ class WinFinderTeamAction extends BaseAction implements WinFinderContract
 
         if ($lastEndReplay) {
             $winningPlayerName = $lastEndReplay['PlayerName'];
-            $winningTeam = $this->getPlayerTeam($players, $winningPlayerName);
+            $winningTeam = $this->getPlayerTeam($playingPlayers, $winningPlayerName);
 
-            foreach ($players as $key => $player) {
-                $players[$key]['win'] = $player['team'] === $winningTeam;
+            foreach ($playingPlayers as $key => $player) {
+                $playingPlayers[$key]['win'] = $player['team'] === $winningTeam;
             }
-            $data['players'] = $players;
+            $data['players'] = $playingPlayers;
             $game->data = $data;
             $game->save();
         }

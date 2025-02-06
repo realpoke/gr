@@ -7,6 +7,7 @@ use App\Contracts\EloCalculatorContract;
 use App\Enums\Rank\RankTimeFrameEnum;
 use App\Models\Game;
 use App\Models\Period;
+use RuntimeException;
 
 class EloCalculatorOneOnOneAction extends BaseAction implements EloCalculatorContract
 {
@@ -30,10 +31,10 @@ class EloCalculatorOneOnOneAction extends BaseAction implements EloCalculatorCon
         });
 
         if (! $winner || ! $loser) {
-            throw new \RuntimeException('Cannot determine winner and loser for game '.$this->game->id);
+            throw new RuntimeException('Cannot determine winner and loser for game '.$this->game->id);
         }
 
-        $period = Period::fromGameModeAndTimeFrame($this->game->type->getGameMode(), RankTimeFrameEnum::ALL);
+        $period = Period::getFirstOrCreateByGameModeAndTimeFrame($this->game->type->getGameMode(), RankTimeFrameEnum::ALL);
 
         $winnerStats = $winner->getOrCreateCurrentStatsForPeriod($period);
         $loserStats = $loser->getOrCreateCurrentStatsForPeriod($period);

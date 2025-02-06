@@ -36,4 +36,36 @@ class Period extends Model
         return $query->where('game_mode', $gameMode->value)
             ->where('rank_time_frame', $timeFrame->value);
     }
+
+    public static function getFirstOrCreateByGameModeAndTimeFrame(
+        GameModeEnum $gameMode,
+        RankTimeFrameEnum $timeFrame
+    ): self {
+        return self::query()->fromGameModeAndTimeFrame($gameMode, $timeFrame)->firstOrCreate([
+            'game_mode' => $gameMode,
+            'rank_time_frame' => $timeFrame,
+        ]);
+    }
+
+    public function scopeAllLatestTimeFramesFromGameMode(
+        Builder $query,
+        GameModeEnum $gameMode
+    ): Builder {
+        $frames = [
+            RankTimeFrameEnum::ALL,
+            RankTimeFrameEnum::MONTHLY,
+            RankTimeFrameEnum::YEARLY,
+        ];
+
+        foreach ($frames as $frame) {
+            $query->union(
+                $this->getFirstOrCreateByGameModeAndTimeFrame(
+                    $gameMode,
+                    $frame
+                )
+            );
+        }
+
+        return $query;
+    }
 }

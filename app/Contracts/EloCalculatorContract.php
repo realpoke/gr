@@ -8,7 +8,7 @@ interface EloCalculatorContract extends BaseActionContract
 {
     public function getGame(): Game;
 
-    public function __construct(private Game $game);
+    public function __construct(Game $game);
 
     public function execute(): self;
 }

@@ -24,15 +24,15 @@ enum RankBracketEnum: string
     public static function fromElo(int $elo): self
     {
         return match (true) {
-            $elo > self::COMMANDER_IN_CHIEF->eloRange()[0] => self::COMMANDER_IN_CHIEF,
-            $elo > self::GENERAL->eloRange()[0] => self::GENERAL,
-            $elo > self::BRIGADIER_GENERAL->eloRange()[0] => self::BRIGADIER_GENERAL,
-            $elo > self::COLONEL->eloRange()[0] => self::COLONEL,
-            $elo > self::MAJOR->eloRange()[0] => self::MAJOR,
-            $elo > self::CAPTAIN->eloRange()[0] => self::CAPTAIN,
-            $elo > self::LIEUTENANT->eloRange()[0] => self::LIEUTENANT,
-            $elo > self::SERGEANT->eloRange()[0] => self::SERGEANT,
-            $elo > self::CORPORAL->eloRange()[0] => self::CORPORAL,
+            $elo >= self::COMMANDER_IN_CHIEF->eloRange()[0] => self::COMMANDER_IN_CHIEF,
+            $elo >= self::GENERAL->eloRange()[0] => self::GENERAL,
+            $elo >= self::BRIGADIER_GENERAL->eloRange()[0] => self::BRIGADIER_GENERAL,
+            $elo >= self::COLONEL->eloRange()[0] => self::COLONEL,
+            $elo >= self::MAJOR->eloRange()[0] => self::MAJOR,
+            $elo >= self::CAPTAIN->eloRange()[0] => self::CAPTAIN,
+            $elo >= self::LIEUTENANT->eloRange()[0] => self::LIEUTENANT,
+            $elo >= self::SERGEANT->eloRange()[0] => self::SERGEANT,
+            $elo >= self::CORPORAL->eloRange()[0] => self::CORPORAL,
             default => self::PRIVATE,
         };
     }

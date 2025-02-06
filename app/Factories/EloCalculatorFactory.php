@@ -14,9 +14,9 @@ class EloCalculatorFactory
     public function __invoke(Game $game): ?EloCalculatorContract
     {
         return match ($game->type->getGameMode()) {
-            GameModeEnum::ONE_ON_ONE => new EloCalculatorOneOnOneAction,
-            GameModeEnum::TEAM => new EloCalculatorTeamAction,
-            GameModeEnum::FREE_FOR_ALL => new EloCalculatorFreeForAllAction,
+            GameModeEnum::ONE_ON_ONE => new EloCalculatorOneOnOneAction($game),
+            GameModeEnum::TEAM => new EloCalculatorTeamAction($game),
+            GameModeEnum::FREE_FOR_ALL => new EloCalculatorFreeForAllAction($game),
             default => null,
         };
     }

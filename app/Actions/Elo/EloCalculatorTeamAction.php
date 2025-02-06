@@ -29,7 +29,7 @@ class EloCalculatorTeamAction extends BaseAction implements EloCalculatorContrac
             return $user->pivot->winner === false;
         });
 
-        $period = Period::fromGameModeAndTimeFrame($this->game->type->getGameMode(), RankTimeFrameEnum::ALL);
+        $period = Period::getFirstOrCreateByGameModeAndTimeFrame($this->game->type->getGameMode(), RankTimeFrameEnum::ALL);
 
         $winningTeamAvgElo = $winningTeamUsers->avg(function ($user) use ($period) {
             $stats = $user->getOrCreateCurrentStatsForPeriod($period);

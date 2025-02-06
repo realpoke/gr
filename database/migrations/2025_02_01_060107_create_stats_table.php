@@ -32,6 +32,7 @@ return new class extends Migration
             $table->smallInteger('losses')->unsigned()->default(0);
             $table->mediumInteger('games')->unsigned()->default(0);
             $table->mediumInteger('streak')->default(0);
+            $table->timestamp('last_game_at')->nullable();
 
             $table->timestamps();
         });
