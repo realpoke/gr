@@ -96,7 +96,7 @@ trait HasStats
             $stat = $this->getOrCreateCurrentStatsForPeriod($period);
         }
 
-        /* $stat->lockForUpdate(); */
+        $stat->lockForUpdate();
 
         $oldElo = $stat->elo ?? 1500;
         $newElo = max(1, $oldElo + $eloChange);
@@ -210,7 +210,6 @@ trait HasStats
             });
         }
 
-        return $query;
-        /* return $query->lockForUpdate(); */
+        return $query->lockForUpdate();
     }
 }
