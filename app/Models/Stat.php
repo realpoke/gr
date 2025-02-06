@@ -18,7 +18,7 @@ class Stat extends Model
         'user_id',
         'period_id',
         'data',
-        /* 'last_game_at', */
+        'last_game_at',
         'bracket',
         'favorite_faction',
         'elo',
@@ -32,9 +32,9 @@ class Stat extends Model
 
     protected static function booted(): void
     {
-        /* static::creating(function (Stat $stat) { */
-        /*    $stat->last_game_at = now(); */
-        /* }); */
+        static::creating(function (Stat $stat) {
+            $stat->last_game_at = now();
+        });
     }
 
     protected function casts(): array
