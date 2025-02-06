@@ -15,9 +15,12 @@ use App\Factories\EloCalculatorFactory;
 use App\Factories\WinFinderFactory;
 use App\Models\Game;
 use App\Models\Period;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use RuntimeException;
 
 class CalculateGameResultsJob implements ShouldQueue
 {
@@ -99,74 +102,59 @@ class CalculateGameResultsJob implements ShouldQueue
 
         $game->refresh();
 
-        $periods = Period::allLatestTimeFramesFromGameMode($game->type->getGameMode())->get();
+        try {
+            DB::transaction(function () use ($game) {
+                $periods = Period::allLatestTimeFramesFromGameMode($game->type->getGameMode())->get();
 
-        DB::beginTransaction();
-        foreach ($game->users as $user) {
+                foreach ($game->users as $user) {
 
-            foreach ($periods as $period) {
+                    foreach ($periods as $period) {
 
-                $stat = $user->getOrCreateCurrentStatsForPeriod($period);
+                        $stat = $user->getOrCreateCurrentStatsForPeriod($period);
 
-                $gameAdder = new StatAddGamePlayedAction($stat, $game, $user);
-                $gameAdder->handle();
+                        $gameAdder = new StatAddGamePlayedAction($stat, $game, $user);
+                        $gameAdder->handle();
 
-                if ($gameAdder->failed()) {
-                    $this->job->fail($gameAdder->getErrorMessage());
+                        if ($gameAdder->failed()) {
+                            throw new RuntimeException($gameAdder->getErrorMessage());
+                        }
 
-                    DB::rollBack();
+                        $statAdder = new StatAddGameStatsAction($stat, $game, $user);
+                        $statAdder->handle();
 
-                    return;
+                        if ($statAdder->failed()) {
+                            throw new RuntimeException($statAdder->getErrorMessage());
+                        }
+
+                        $eloChanger = new StatAddGameEloAction($stat, $user);
+                        $eloChanger->handle();
+
+                        if ($eloChanger->failed()) {
+                            throw new RuntimeException($eloChanger->getErrorMessage());
+                        }
+
+                        $bracketUpdater = new UpdateStatRankBracketAction($stat);
+                        $bracketUpdater->handle();
+
+                        if ($bracketUpdater->failed()) {
+                            throw new RuntimeException($bracketUpdater->getErrorMessage());
+                        }
+
+                        $factionUpdater = new UpdateStatFavoriteFactionAction($stat, $game, $user);
+                        $factionUpdater->handle();
+
+                        if ($factionUpdater->failed()) {
+                            throw new RuntimeException($factionUpdater->getErrorMessage());
+                        }
+                    }
+
                 }
+            });
+        } catch (Exception $e) {
+            Log::error('Failed to process game stats for game ID: '.$game->id.'. Error: '.$e->getMessage());
 
-                $statAdder = new StatAddGameStatsAction($stat, $game, $user);
-                $statAdder->handle();
-
-                if ($statAdder->failed()) {
-                    $this->job->fail($statAdder->getErrorMessage());
-
-                    DB::rollBack();
-
-                    return;
-                }
-
-                $eloChanger = new StatAddGameEloAction($stat, $user);
-                $eloChanger->handle();
-
-                if ($eloChanger->failed()) {
-                    $this->job->fail($eloChanger->getErrorMessage());
-
-                    DB::rollBack();
-
-                    return;
-                }
-
-                $bracketUpdater = new UpdateStatRankBracketAction($stat);
-                $bracketUpdater->handle();
-
-                if ($bracketUpdater->failed()) {
-                    $this->job->fail($bracketUpdater->getErrorMessage());
-
-                    DB::rollBack();
-
-                    return;
-                }
-
-                $factionUpdater = new UpdateStatFavoriteFactionAction($stat, $game, $user);
-                $factionUpdater->handle();
-
-                if ($factionUpdater->failed()) {
-                    $this->job->fail($factionUpdater->getErrorMessage());
-
-                    DB::rollBack();
-
-                    return;
-                }
-            }
-
+            return;
         }
-
-        DB::commit();
     }
 
     private function isRankedGame(Game $game): bool
