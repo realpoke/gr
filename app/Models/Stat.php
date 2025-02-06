@@ -108,7 +108,7 @@ class Stat extends Model
 
     public function giveStats(Collection $statsToAdd): bool
     {
-        $this->lockForUpdate();
+        /* $this->lockForUpdate(); */
 
         $strippedStats = $statsToAdd->only([
             'faction',
