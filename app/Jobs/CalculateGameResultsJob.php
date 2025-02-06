@@ -26,12 +26,13 @@ class CalculateGameResultsJob implements ShouldQueue
 {
     use Queueable;
 
-    public $queue = 'elo';
-
     /**
      * Create a new job instance.
      */
-    public function __construct(private int $gameId) {}
+    public function __construct(private int $gameId)
+    {
+        $this->onQueue('elo');
+    }
 
     /**
      * Execute the job.
