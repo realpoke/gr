@@ -47,6 +47,11 @@ class StatAddGamePlayedAction extends BaseAction
             $this->setFailed('Failed to save stat: '.$this->stat->getErrorMessage());
         }
 
+        $this->user->last_game_at = now();
+        if (! $this->user->save()) {
+            $this->setFailed('Failed to save user: '.$this->user->getErrorMessage());
+        }
+
         return $this->setSuccessful();
     }
 }
