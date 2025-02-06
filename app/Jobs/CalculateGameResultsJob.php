@@ -62,11 +62,11 @@ class CalculateGameResultsJob implements ShouldQueue
         $winSetter = new SetGamePivotWinnerAction($game);
         $winSetter->handle();
 
-        /* if ($winSetter->failed()) { */
-        /*    $this->job->fail($winSetter->getErrorMessage()); */
-        /**/
-        /*    return; */
-        /* } */
+        if ($winSetter->failed()) {
+            $this->job->fail($winSetter->getErrorMessage());
+
+            return;
+        }
 
         if (! $this->isRankedGame($game)) {
             $game->status = GameStatusEnum::UNRANKED;
