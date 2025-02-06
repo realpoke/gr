@@ -26,6 +26,8 @@ class CalculateGameResultsJob implements ShouldQueue
 {
     use Queueable;
 
+    public $queue = 'elo';
+
     /**
      * Create a new job instance.
      */
