@@ -143,11 +143,12 @@ class ReplayParserAction extends BaseAction
 
     private function setPlayers(Collection $data)
     {
+        $body = collect($data['Body']);
         $summary = collect($data['Summary']);
         $replayOwnerSlot = $data['Header']['ReplayOwnerSlot'];
 
         $this->players = collect($data['Header']['Metadata']['Players'])
-            ->map(function ($player, $index) use ($summary, $replayOwnerSlot) {
+            ->map(function ($player, $index) use ($body, $summary, $replayOwnerSlot) {
                 $playerSummary = $summary->firstWhere('Name', $player['Name']);
 
                 // Calculate the expected slot format for this player
@@ -183,6 +184,14 @@ class ReplayParserAction extends BaseAction
                 // Determine if the player is playing
                 $isPlaying = $type->isHuman() && $faction->isPlaying();
 
+                // Exclude important orders and get the last order
+                $playerOrders = $body->filter(function ($order) use ($player) {
+                    return $order['PlayerName'] === $player['Name'] &&
+                           ! (($order['OrderCode'] == 27 && $order['OrderName'] === 'EndReplay') ||
+                             ($order['OrderCode'] == 1093 && $order['OrderName'] === 'Surrender'));
+                });
+                $lastOrder = $playerOrders->sortBy('TimeCode')->last();
+
                 return [
                     'name' => $player['Name'],
                     'type' => $type,
@@ -192,6 +201,7 @@ class ReplayParserAction extends BaseAction
                     'isPlaying' => $isPlaying,
                     'side' => $side,
                     'win' => false, // NOTE: Always set win to false, we use our own win calculation.
+                    'lastOrder' => $lastOrder,
                     'moneySpent' => $playerSummary['MoneySpent'] ?? null,
                     'unitsCreated' => $playerSummary['UnitsCreated'] ?? [],
                     'buildingsBuilt' => $playerSummary['BuildingsBuilt'] ?? [],
