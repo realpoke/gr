@@ -187,8 +187,13 @@ class ReplayParserAction extends BaseAction
                 // Exclude important orders and get the last order
                 $playerOrders = $body->filter(function ($order) use ($player) {
                     return $order['PlayerName'] === $player['Name'] &&
-                           ! (($order['OrderCode'] == 27 && $order['OrderName'] === 'EndReplay') ||
-                             ($order['OrderCode'] == 1093 && $order['OrderName'] === 'Surrender'));
+                            ! (($order['OrderCode'] == 27 && $order['OrderName'] === 'EndReplay') ||
+                            ($order['OrderCode'] == 1093 && $order['OrderName'] === 'Surrender') ||
+                            ($order['OrderCode'] == 1003 && $order['OrderName'] === 'ClearSelection') ||
+                            ($order['OrderCode'] == 1058 && $order['OrderName'] === 'SelectBox') ||
+                            ($order['OrderCode'] == 1001 && $order['OrderName'] === 'SetSelection') ||
+                            ($order['OrderCode'] == 1095 && $order['OrderName'] === 'Checksum'));
+
                 });
                 $lastOrder = $playerOrders->sortBy('TimeCode')->last();
 
