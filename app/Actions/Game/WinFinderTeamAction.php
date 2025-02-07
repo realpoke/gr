@@ -17,122 +17,77 @@ class WinFinderTeamAction extends BaseAction implements WinFinderContract
 
     public function execute(): self
     {
-        $this->findAndSetWinner($this->game);
+        $finder = $this->findAndSetWinner($this->game);
+
+        if (! is_null($finder)) {
+            return $this->setFailed($finder);
+        }
 
         $this->game = $this->game->refresh();
 
         return $this->setSuccessful();
     }
 
-    private function findAndSetWinner(Game $game): void
+    private function findAndSetWinner(Game $game): ?string
     {
+        $winningTeam = null;
+
         $data = $game->data;
-        $importantOrders = $data['importantOrders'];
-        $playingPlayers = collect($this->game->data['players'])
+        $importantOrders = collect($data['importantOrders'] ?? []);
+        $playersPlaying = $data['metaData']['playersPlaying'];
+
+        // 1. Group players by team (pluck player names)
+        $teamPlayerNames = collect($data['players'] ?? [])
             ->filter(fn ($player) => $player['isPlaying'])
+            ->groupBy('team')
+            ->map(fn ($group) => $group->pluck('name')->toArray())
             ->toArray();
 
-        // Track surrendered players
-        $surrenderedPlayers = [];
-        $teamSurrenders = [];
+        // 2. Get players' latest surrender or lastOrder time
+        $playerLastActions = collect($data['players'] ?? [])
+            ->filter(fn ($player) => $player['isPlaying'])
+            ->mapWithKeys(function ($player) use ($importantOrders) {
+                $surrender = $importantOrders
+                    ->where('OrderName', 'Surrender')
+                    ->where('PlayerName', $player['name'])
+                    ->sortBy('TimeCode')
+                    ->last();
 
-        // Check for team surrenders first
-        foreach ($importantOrders as $order) {
-            if ($order['OrderName'] === 'Surrender') {
-                $surrenderedPlayerName = $order['PlayerName'];
-                $surrenderedPlayers[] = $surrenderedPlayerName;
-                $surrenderedTeam = $this->getPlayerTeam($playingPlayers, $surrenderedPlayerName);
-                $teamSurrenders[$surrenderedTeam][] = $surrenderedPlayerName;
-            }
-        }
+                return [$player['name'] => $surrender['TimeCode'] ?? $player['lastOrder']['TimeCode']];
+            });
 
-        // Get team members from players
-        $teams = [];
-        foreach ($playingPlayers as $player) {
-            $teams[$player['team']][] = $player['name'];
-        }
+        // If all players have a last action recorded
+        if ($playersPlaying == $playerLastActions->count()) {
+            // Determine the last action
+            $lastSurrender = $playerLastActions->sort()->last();
 
-        // Check if all teams surrendered
-        $allTeamsSurrendered = true;
-        foreach ($teams as $teamId => $teamMembers) {
-            if (! isset($teamSurrenders[$teamId]) || count($teamSurrenders[$teamId]) !== count($teamMembers)) {
-                $allTeamsSurrendered = false;
-                break;
-            }
-        }
-
-        // If all teams surrendered, determine winner by last to surrender
-        if ($allTeamsSurrendered) {
-            $lastSurrender = null;
-            foreach ($importantOrders as $order) {
-                if ($order['OrderName'] === 'Surrender') {
-                    if (! $lastSurrender || $order['TimeCode'] > $lastSurrender['TimeCode']) {
-                        $lastSurrender = $order;
-                    }
-                }
-            }
-
-            // The team that surrendered last wins
-            if ($lastSurrender) {
-                $winningTeam = $this->getPlayerTeam($playingPlayers, $lastSurrender['PlayerName']);
-                foreach ($playingPlayers as $key => $player) {
-                    $playingPlayers[$key]['win'] = ($player['team'] === $winningTeam);
-                }
-                $data['players'] = $playingPlayers;
-                $game->data = $data;
-                $game->save();
-
-                return;
-            }
-        }
-
-        // Check if any team has all members surrendered
-        foreach ($teams as $teamId => $teamMembers) {
-            if (isset($teamSurrenders[$teamId]) && count($teamSurrenders[$teamId]) === count($teamMembers)) {
-                // This team has fully surrendered - other teams win
-                foreach ($playingPlayers as $key => $player) {
-                    $playingPlayers[$key]['win'] = $player['team'] !== $teamId;
-                }
-                $data['players'] = $playingPlayers;
-                $game->data = $data;
-                $game->save();
-
-                return;
-            }
-        }
-
-        // If no complete team surrender, check who ended the replay last
-        // but ignore EndReplay from surrendered players
-        $lastEndReplay = null;
-        foreach ($importantOrders as $order) {
-            if ($order['OrderName'] === 'EndReplay' && ! in_array($order['PlayerName'], $surrenderedPlayers)) {
-                if (! $lastEndReplay || $order['TimeCode'] > $lastEndReplay['TimeCode']) {
-                    $lastEndReplay = $order;
+            // Determine which team the last surrendering player belongs to
+            foreach ($teamPlayerNames as $teamId => $players) {
+                if (array_search($lastSurrender, $playerLastActions->toArray(), true) !== false) {
+                    $winningTeam = $teamId;
+                    break;
                 }
             }
         }
 
-        if ($lastEndReplay) {
-            $winningPlayerName = $lastEndReplay['PlayerName'];
-            $winningTeam = $this->getPlayerTeam($playingPlayers, $winningPlayerName);
-
-            foreach ($playingPlayers as $key => $player) {
-                $playingPlayers[$key]['win'] = $player['team'] === $winningTeam;
-            }
-            $data['players'] = $playingPlayers;
-            $game->data = $data;
-            $game->save();
-        }
-    }
-
-    private function getPlayerTeam(array $players, string $playerName): string
-    {
-        foreach ($players as $player) {
-            if ($player['name'] === $playerName) {
-                return $player['team'];
-            }
+        if (is_null($winningTeam)) {
+            return 'Could not determine winning team in game: '.$game->id;
         }
 
-        return '-1';
+        // Mark win flags on players: winning team gets true, others false
+        $dataPlayers = collect($game->data['players'])->map(function ($player) use ($winningTeam) {
+            $player['win'] = ($player['team'] == $winningTeam);
+
+            return $player;
+        })->toArray();
+
+        $data['players'] = $dataPlayers;
+        $game->data = $data;
+
+        if (! $game->save()) {
+            return 'Failed to save game data: '.$game->id;
+        }
+
+        return null;
     }
 }
