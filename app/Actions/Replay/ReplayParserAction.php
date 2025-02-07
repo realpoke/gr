@@ -202,7 +202,7 @@ class ReplayParserAction extends BaseAction
                     'side' => $side,
                     'win' => false, // NOTE: Always set win to false, we use our own win calculation.
                     'lastOrder' => $lastOrder,
-                    'moneySpent' => $playerSummary['MoneySpent'] ?? null,
+                    'moneySpent' => $playerSummary['MoneySpent'] ?? 0,
                     'unitsCreated' => $playerSummary['UnitsCreated'] ?? [],
                     'buildingsBuilt' => $playerSummary['BuildingsBuilt'] ?? [],
                     'upgradesBuilt' => $playerSummary['UpgradesBuilt'] ?? [],
