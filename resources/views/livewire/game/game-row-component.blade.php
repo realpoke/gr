@@ -5,7 +5,7 @@
     <flux:cell>{{ $this->game->map->name }}</flux:cell>
     <flux:cell class="!py-0">
         @if ($this->game->elo_average)
-            <div class="flex flex-row items-start xl:flex-col -gap-x-2">
+            <div class="flex items-start flex-col">
                 <flux:text>{{ $this->game->elo_average }}</flux:text>
                 <flux:text size="sm">{{ $this->game->bracket->prettyName(withRange: false) }}</flux:text>
             </div>
