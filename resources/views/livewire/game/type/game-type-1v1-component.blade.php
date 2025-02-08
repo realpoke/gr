@@ -13,7 +13,11 @@
 
     <div class="grid grid-cols-1 gap-6 xl:grid-flow-col xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
         <!-- Left Card -->
-        <flux:card class="{{ $this->players->first()['win'] ? 'relative space-y-6 border-1 border-amber-500 dark:border-amber-300' : 'relative space-y-6' }}">
+        @if ($this->players->first()['win'])
+            <flux:card class="relative space-y-6 border-1 border-amber-500 dark:border-amber-300">
+        @else
+            <flux:card class="relative space-y-6">
+        @endif
             <div class="flex gap-1 items-start">
                 @if ($this->players->first()['win'])
                     <flux:icon.crown class="text-amber-500 dark:text-amber-300 absolute top-1 left-4 -rotate-12" />
@@ -115,7 +119,11 @@
         </div>
 
         <!-- Right Card -->
-        <flux:card class="{{ $this->players->last()['win'] ? 'relative space-y-6 border-1 border-amber-500 dark:border-amber-300' : 'relative space-y-6' }}">
+        @if ($this->players->last()['win'])
+            <flux:card class="relative space-y-6 border-1 border-amber-500 dark:border-amber-300">
+        @else
+            <flux:card class="relative space-y-6">
+        @endif
             <div class="flex gap-1 items-start">
                 @if ($this->players->last()['win'])
                     <flux:icon.crown class="text-amber-500 dark:text-amber-300 absolute top-1 left-4 -rotate-12" />
