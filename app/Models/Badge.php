@@ -36,7 +36,7 @@ class Badge extends Model
             ->withPivot(BadgeUserPivot::FIELDS);
     }
 
-    public function getTypeData()
+    public function getTypeData(): null|array|Carbon|int|bool
     {
         if ($this->pivot === null) {
             return null;
@@ -47,14 +47,17 @@ class Badge extends Model
             BadgeTypeEnum::SINCE => $this->getSince(),
             BadgeTypeEnum::ADDITIONAL => $this->getAmount(),
             BadgeTypeEnum::TIMESTAMP => $this->getTimestamp(),
+            BadgeTypeEnum::UNIQUE => true,
             default => throw new RuntimeException('Invalid badge type'),
         };
     }
 
-    public function setTypeData($data)
+    public function setTypeData($data): ?self
     {
         if ($this->pivot === null) {
             return null;
+        } elseif ($data === null) {
+            return $this;
         }
 
         return match ($this->type) {
@@ -62,6 +65,7 @@ class Badge extends Model
             BadgeTypeEnum::SINCE => $this->setSince($data),
             BadgeTypeEnum::ADDITIONAL => $this->setAmount($data),
             BadgeTypeEnum::TIMESTAMP => $this->setTimestamp($data),
+            BadgeTypeEnum::UNIQUE => $this,
             default => throw new RuntimeException('Invalid badge type'),
         };
     }
