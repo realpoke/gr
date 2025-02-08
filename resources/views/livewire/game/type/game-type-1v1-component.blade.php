@@ -158,7 +158,7 @@
                 </div>
             </div>
 
-            <flux:separator text="{{ $this->players->last()['faction'] == '-1' ? $this->players->last()['stats']['favorite_faction']->getSide()->prettyName().' ('.SideEnum::tryFrom($this->players->last()['side'])->prettyName().')' : FactionEnum::tryFrom($this->players->last()['faction'])->getSide()->prettyName() }}" />
+            <flux:separator text="{{ $this->players->last()['faction'] == '-1' ? FactionEnum::tryFrom($this->players->last()['faction'])->getSide()->prettyName().' ('.SideEnum::tryFrom($this->players->last()['side'])->prettyName().')' : FactionEnum::tryFrom($this->players->last()['faction'])->getSide()->prettyName() }}" />
 
             <flux:accordion transition>
                 <flux:accordion.item>
