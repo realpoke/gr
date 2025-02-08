@@ -37,7 +37,7 @@ class ZhIconComponent extends Component
             $teamAsset = asset($basePath.'/teams/'.$subFolder.$type);
         } elseif (str::contains($name, 'GLA')) {
             $teamAsset = asset($basePath.'/teams/GLA'.$type);
-        } elseif (str::contains($name, 'CHINA')) {
+        } elseif (str::contains($name, 'China')) {
             $teamAsset = asset($basePath.'/teams/China'.$type);
         } elseif (str::contains($name, 'America')) {
             $teamAsset = asset($basePath.'/teams/America'.$type);
