@@ -5,6 +5,7 @@ namespace App\Livewire\Game;
 use App\Enums\FactionEnum;
 use App\Models\Game;
 use App\Models\Map;
+use App\Models\Period;
 use Carbon\CarbonInterval;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -33,7 +34,12 @@ class ShowGamePage extends Component
     #[Computed()]
     public function players(): Collection
     {
-        $users = $this->game->users->keyBy(fn ($user) => $user->pivot->player_name);
+        $period = Period::AllTimeFromGameMode($this->game->type->getGameMode())->first();
+
+        $users = $this->game->users()
+            ->with(['stats' => fn ($query) => $query->where('period_id', $period->id)])
+            ->get()
+            ->keyBy(fn ($user) => $user->pivot->player_name);
 
         return collect($this->game->data['players'])
             ->filter(fn ($player) => $player['isPlaying'])
@@ -42,6 +48,25 @@ class ShowGamePage extends Component
                     $user = $users[$player['name']];
                     $player['eliminated_position'] = $user->pivot->eliminated_position;
                     $player['elo_change'] = $user->pivot->elo_change;
+                    $player['stats'] = $user->stats->first();
+                    $player['badge_url'] = $player['stats']->badgeUrl;
+                    $player['profile_url'] = $player['stats']->profileUrl;
+                }
+
+                foreach (['unitsCreated', 'buildingsBuilt', 'upgradesBuilt', 'powersUsed'] as $category) {
+                    if (isset($player[$category])) {
+                        if ($category === 'powersUsed') {
+                            $data = collect($player[$category]);
+                            $player[$category.'_amount'] = $data->sum();
+                        } else {
+                            $data = collect($player[$category]);
+                            $player[$category.'_spent'] = $data->sum('TotalSpent');
+                            $player[$category.'_amount'] = $data->sum('Count');
+                        }
+                    } else {
+                        $player[$category.'_spent'] = 0;
+                        $player[$category.'_amount'] = 0;
+                    }
                 }
 
                 return $player;

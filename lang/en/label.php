@@ -41,4 +41,5 @@ return [
     'placeholder' => [
         'map' => 'Search Map',
     ],
+    'versus' => 'VS',
 ];

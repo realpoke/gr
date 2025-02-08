@@ -24,11 +24,11 @@ trait HasStats
         });
     }
 
-    public function scopeWithStats(Builder $query, Period $period): Builder
+    public function scopeWithStatFromPeriod(Builder $query, Period $period): Builder
     {
         return $query->with(['stats' => function (Builder $q) use ($period) {
             return $q->where('period_id', $period->id);
-        }])->whereNotNull('stats.rank');
+        }]);
     }
 
     public function scopeSortByStat(

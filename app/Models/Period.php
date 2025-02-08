@@ -37,6 +37,13 @@ class Period extends Model
             ->where('rank_time_frame', $timeFrame->value);
     }
 
+    public static function scopeAllTimeFromGameMode(
+        Builder $query,
+        GameModeEnum $gameMode
+    ): Builder {
+        return $query->fromGameModeAndTimeFrame($gameMode, RankTimeFrameEnum::ALL);
+    }
+
     public static function getFirstOrCreateByGameModeAndTimeFrame(
         GameModeEnum $gameMode,
         RankTimeFrameEnum $timeFrame
