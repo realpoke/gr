@@ -22,7 +22,7 @@ class ZhIconComponent extends Component
         $name = $exploded->pop();
         $subFolder = $exploded->pop();
 
-        $basePath = 'storage/images/zh/';
+        $basePath = 'images/zh/';
         $iconPath = $basePath.$subFolder.'/'.$subFolder.'_'.$name.$type;
 
         if (! is_null($subFolder) && file_exists(public_path($iconPath))) {
@@ -30,7 +30,7 @@ class ZhIconComponent extends Component
         } elseif (file_exists(public_path($basePath.'/base/'.$name.$type))) {
             $iconAsset = asset($basePath.'/base/'.$name.$type);
         } else {
-            $iconAsset = asset('storage/images/zh/unknown.png');
+            $iconAsset = asset($basePath.'unknown.png');
         }
 
         if (! is_null($subFolder) && file_exists(public_path($basePath.'/teams/'.$subFolder.$type))) {
