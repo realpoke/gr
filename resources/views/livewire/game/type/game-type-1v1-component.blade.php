@@ -6,7 +6,7 @@
     <!-- Info Block (Always on top) -->
     <div>
         <flux:heading>
-            {{ __('label.game-info', ['map' => $this->map->name, 'played-at' => $this->played_at->diffForHumans(['short' => true]), 'elo-average' => $this->game->elo_average, 'bracket' => $this->game->bracket->prettyName(false), 'interval' => $this->interval->cascade()->forHumans(['short' => true])]) }}
+            {{ __('label.game-info', ['map' => $this->map->name, 'played-at' => $this->game->created_at->diffForHumans(['short' => true]), 'elo-average' => $this->game->elo_average, 'bracket' => $this->game->bracket->prettyName(false), 'interval' => $this->interval->cascade()->forHumans(['short' => true])]) }}
         </flux:heading>
     </div>
 
