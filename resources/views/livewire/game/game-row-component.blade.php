@@ -1,5 +1,6 @@
 @use('Carbon\CarbonInterval')
 @use('App\Enums\FactionEnum')
+@use('App\Enums\Rank\RankBracketEnum')
 
 <flux:row>
     <flux:cell>{{ $this->game->map->name }}</flux:cell>
@@ -20,7 +21,7 @@
                 <div class="flex -space-x-2 overflow-hidden">
                     @foreach ($game->winners as $winner)
                         <flux:tooltip content="{{ $winner->username }}">
-                            <flux:avatar class="border-2 dark:border-zinc-700 border-white bg-white" size="xs" src="{{ $winner->avatar }}" />
+                            <flux:avatar class="border-2 dark:border-zinc-700 border-white" size="xs" src="{{ RankBracketEnum::UNRANKED->profileUrl() }}" />
                         </flux:tooltip>
                     @endforeach
                 </div>
@@ -35,7 +36,7 @@
             <div class="flex -space-x-2 overflow-hidden">
                 @foreach ($this->game['data']['players'] as $player)
                     <flux:tooltip content="{{ __('tooltip.game-player-as', ['name' => $player['name'], 'faction' => FactionEnum::tryFrom($player['faction'])->getSide()->prettyName()]) }}">
-                        <flux:avatar class="border-2 dark:border-zinc-700 border-white bg-white" size="xs"/>
+                        <flux:avatar src="{{ RankBracketEnum::UNRANKED->profileUrl()}}" class="border-2 dark:border-zinc-700 border-white" size="xs"/>
                     </flux:tooltip>
                 @endforeach
             </div>

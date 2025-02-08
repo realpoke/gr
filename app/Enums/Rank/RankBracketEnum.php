@@ -2,6 +2,7 @@
 
 namespace App\Enums\Rank;
 
+use App\Enums\SideEnum;
 use App\Traits\EnumArray;
 
 enum RankBracketEnum: string
@@ -69,5 +70,23 @@ enum RankBracketEnum: string
             self::PRIVATE => $withRange ? __('enum.bracket.private').' ('.self::PRIVATE->eloRange()[0].'-'.self::PRIVATE->eloRange()[1].')' : __('enum.bracket.private'),
             default => ucfirst(str_replace('-', ' ', $this->value)),
         };
+    }
+
+    public function profileUrl(?SideEnum $side = null): string
+    {
+        if (is_null($side)) {
+            return asset('images/brackets/profile/unranked.png');
+        }
+
+        return asset('images/brackets/profile/'.$this->value.'_'.$side->value.'.png');
+    }
+
+    public function badgeUrl(?SideEnum $side = null): string
+    {
+        if (is_null($side)) {
+            return asset('images/brackets/badge/unranked.png');
+        }
+
+        return asset('images/brackets/badge/'.$this->value.'_'.$side->value.'.png');
     }
 }

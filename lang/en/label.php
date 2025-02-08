@@ -42,4 +42,5 @@ return [
         'map' => 'Search Map',
     ],
     'versus' => 'VS',
+    'game-info' => ':map was played :played-at with an average Elo of :elo-average in :bracket for :interval',
 ];

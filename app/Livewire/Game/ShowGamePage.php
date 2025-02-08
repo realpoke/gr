@@ -41,17 +41,23 @@ class ShowGamePage extends Component
             ->get()
             ->keyBy(fn ($user) => $user->pivot->player_name);
 
+        $maxOrders = collect($this->game->data['players'])
+            ->filter(fn ($player) => $player['isPlaying'])
+            ->max(fn ($player) => $player['countOrders'] ?? 0);
+
         return collect($this->game->data['players'])
             ->filter(fn ($player) => $player['isPlaying'])
-            ->map(function ($player) use ($users) {
+            ->map(function ($player) use ($users, $maxOrders) {
                 if (isset($users[$player['name']])) {
                     $user = $users[$player['name']];
                     $player['eliminated_position'] = $user->pivot->eliminated_position;
                     $player['elo_change'] = $user->pivot->elo_change;
                     $player['stats'] = $user->stats->first();
-                    $player['badge_url'] = $player['stats']->badgeUrl;
-                    $player['profile_url'] = $player['stats']->profileUrl;
+                    $player['badge_url'] = $player['stats']?->badgeUrl;
+                    $player['profile_url'] = $player['stats']?->profileUrl;
                 }
+
+                $player['mvp'] = (($player['countOrders'] ?? 0) === $maxOrders);
 
                 foreach (['unitsCreated', 'buildingsBuilt', 'upgradesBuilt', 'powersUsed'] as $category) {
                     if (isset($player[$category])) {

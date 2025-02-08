@@ -67,12 +67,12 @@ class Stat extends Model
 
     public function getProfileUrlAttribute(): string
     {
-        return asset('images/brackets/profile/'.$this->bracket->value.'_'.$this->favorite_faction->getSide()->value.'.png');
+        return $this->bracket->profileUrl($this->favorite_faction->getSide());
     }
 
     public function getBadgeUrlAttribute(): string
     {
-        return asset('images/brackets/badge/'.$this->bracket->value.'_'.$this->favorite_faction->getSide()->value.'.png');
+        return $this->bracket->badgeUrl($this->favorite_faction->getSide());
     }
 
     public function favoriteBaseFaction(): FactionEnum
