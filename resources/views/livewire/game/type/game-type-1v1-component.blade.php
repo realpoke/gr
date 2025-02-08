@@ -72,7 +72,7 @@
                         @forelse(collect($this->players->first()['buildingsBuilt'])->sortByDesc('TotalSpent') as $building => $stat)
                             <livewire:partials.zh-icon-component :unit="$building" :tooltip="__('stat.building', ['building' => $building, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
                         @empty
-                          {{ __('stat.no-units') }}
+                          {{ __('stat.no-buildings') }}
                         @endforelse
                       </div>
                     </flux:accordion.content>
@@ -84,7 +84,7 @@
                         @forelse(collect($this->players->first()['upgradesBuilt'])->sortByDesc('TotalSpent') as $upgrade => $stat)
                             <livewire:partials.zh-icon-component :unit="$upgrade" :tooltip="__('stat.upgrade', ['upgrade' => $upgrade, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
                         @empty
-                          {{ __('stat.no-units') }}
+                          {{ __('stat.no-upgrades') }}
                         @endforelse
                       </div>
                     </flux:accordion.content>
@@ -96,7 +96,7 @@
                         @forelse(collect($this->players->first()['powersUsed']) as $power => $count)
                             <livewire:partials.zh-icon-component :unit="$power" :tooltip="__('stat.power', ['power' => $power, 'amount' => $stat['Count']])" />
                         @empty
-                          {{ __('stat.no-units') }}
+                          {{ __('stat.no-powers') }}
                         @endforelse
                       </div>
                     </flux:accordion.content>
@@ -174,7 +174,7 @@
                         @forelse(collect($this->players->last()['buildingsBuilt'])->sortByDesc('TotalSpent') as $building => $stat)
                             <livewire:partials.zh-icon-component :unit="$building" :tooltip="__('stat.building', ['building' => $building, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
                         @empty
-                          {{ __('stat.no-units') }}
+                          {{ __('stat.no-buildings') }}
                         @endforelse
                       </div>
                     </flux:accordion.content>
@@ -186,7 +186,7 @@
                         @forelse(collect($this->players->last()['upgradesBuilt'])->sortByDesc('TotalSpent') as $upgrade => $stat)
                             <livewire:partials.zh-icon-component :unit="$upgrade" :tooltip="__('stat.upgrade', ['upgrade' => $upgrade, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
                         @empty
-                          {{ __('stat.no-units') }}
+                          {{ __('stat.no-upgrades') }}
                         @endforelse
                       </div>
                     </flux:accordion.content>
@@ -198,7 +198,7 @@
                         @forelse(collect($this->players->last()['powersUsed']) as $power => $count)
                             <livewire:partials.zh-icon-component :unit="$power" :tooltip="__('stat.power', ['power' => $power, 'amount' => $stat['Count'], ])" />
                         @empty
-                          {{ __('stat.no-units') }}
+                          {{ __('stat.no-powers') }}
                         @endforelse
                       </div>
                     </flux:accordion.content>
