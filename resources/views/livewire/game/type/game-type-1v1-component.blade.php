@@ -56,49 +56,57 @@
                 <flux:accordion.item>
                     <flux:accordion.heading>{{ __('stat.units', ['spent' => $this->players->first()['unitsCreated_spent'], 'amount' => $this->players->first()['unitsCreated_amount']]) }}</flux:accordion.heading>
                     <flux:accordion.content>
-                      <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
-                        @forelse(collect($this->players->first()['unitsCreated'])->sortByDesc('TotalSpent') as $unit => $stat)
-                            <livewire:partials.zh-icon-component :unit="$unit" :tooltip="__('stat.unit', ['unit' => $unit, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
-                        @empty
-                          {{ __('stat.no-units') }}
-                        @endforelse
-                      </div>
+                        <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
+                            @forelse(collect($this->players->first()['unitsCreated'])->sortByDesc('TotalSpent') as $unit => $stat)
+                                <livewire:partials.zh-icon-component :unit="$unit" :tooltip="__('stat.unit', ['unit' => $unit, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
+                            @empty
+                                </div>
+                                    <flux:text>{{ __('stat.no-units') }}</flux:text>
+                                <div>
+                            @endforelse
+                        </div>
                     </flux:accordion.content>
                 </flux:accordion.item>
                 <flux:accordion.item>
                     <flux:accordion.heading>{{ __('stat.buildings', ['spent' => $this->players->first()['buildingsBuilt_spent'], 'amount' => $this->players->first()['buildingsBuilt_amount']]) }}</flux:accordion.heading>
                     <flux:accordion.content>
-                      <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
-                        @forelse(collect($this->players->first()['buildingsBuilt'])->sortByDesc('TotalSpent') as $building => $stat)
-                            <livewire:partials.zh-icon-component :unit="$building" :tooltip="__('stat.building', ['building' => $building, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
-                        @empty
-                          {{ __('stat.no-buildings') }}
-                        @endforelse
-                      </div>
+                        <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
+                            @forelse(collect($this->players->first()['buildingsBuilt'])->sortByDesc('TotalSpent') as $building => $stat)
+                                <livewire:partials.zh-icon-component :unit="$building" :tooltip="__('stat.building', ['building' => $building, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
+                            @empty
+                                </div>
+                                    <flux:text>{{ __('stat.no-buildings') }}</flux:text>
+                                <div>
+                            @endforelse
+                        </div>
                     </flux:accordion.content>
                 </flux:accordion.item>
                 <flux:accordion.item>
                     <flux:accordion.heading>{{ __('stat.upgrades', ['spent' => $this->players->first()['upgradesBuilt_spent'], 'amount' => $this->players->first()['upgradesBuilt_amount']]) }}</flux:accordion.heading>
                     <flux:accordion.content>
-                      <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
-                        @forelse(collect($this->players->first()['upgradesBuilt'])->sortByDesc('TotalSpent') as $upgrade => $stat)
-                            <livewire:partials.zh-icon-component :unit="$upgrade" :tooltip="__('stat.upgrade', ['upgrade' => $upgrade, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
-                        @empty
-                          {{ __('stat.no-upgrades') }}
-                        @endforelse
-                      </div>
+                        <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
+                            @forelse(collect($this->players->first()['upgradesBuilt'])->sortByDesc('TotalSpent') as $upgrade => $stat)
+                                <livewire:partials.zh-icon-component :unit="$upgrade" :tooltip="__('stat.upgrade', ['upgrade' => $upgrade, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
+                            @empty
+                                </div>
+                                    <flux:text>{{ __('stat.no-upgrades') }}</flux:text>
+                                <div>
+                            @endforelse
+                        </div>
                     </flux:accordion.content>
                 </flux:accordion.item>
                 <flux:accordion.item>
                     <flux:accordion.heading>{{ __('stat.powers', ['amount' => $this->players->first()['powersUsed_amount']]) }}</flux:accordion.heading>
                     <flux:accordion.content>
-                      <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
-                        @forelse(collect($this->players->first()['powersUsed']) as $power => $count)
-                            <livewire:partials.zh-icon-component :unit="$power" :tooltip="__('stat.power', ['power' => $power, 'amount' => $stat['Count']])" />
-                        @empty
-                          {{ __('stat.no-powers') }}
-                        @endforelse
-                      </div>
+                        <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
+                            @forelse(collect($this->players->first()['powersUsed']) as $power => $count)
+                                <livewire:partials.zh-icon-component :unit="$power" :tooltip="__('stat.power', ['power' => $power, 'amount' => $stat['Count']])" />
+                            @empty
+                                </div>
+                                    <flux:text>{{ __('stat.no-powers') }}</flux:text>
+                                <div>
+                            @endforelse
+                        </div>
                     </flux:accordion.content>
                 </flux:accordion.item>
             </flux:accordion>
@@ -158,49 +166,57 @@
                 <flux:accordion.item>
                     <flux:accordion.heading>{{ __('stat.units', ['spent' => $this->players->last()['unitsCreated_spent'], 'amount' => $this->players->last()['unitsCreated_amount']]) }}</flux:accordion.heading>
                     <flux:accordion.content>
-                      <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
-                        @forelse(collect($this->players->last()['unitsCreated'])->sortByDesc('TotalSpent') as $unit => $stat)
-                            <livewire:partials.zh-icon-component :unit="$unit" :tooltip="__('stat.unit', ['unit' => $unit, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
-                        @empty
-                          {{ __('stat.no-units') }}
-                        @endforelse
-                      </div>
+                        <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
+                            @forelse(collect($this->players->last()['unitsCreated'])->sortByDesc('TotalSpent') as $unit => $stat)
+                                <livewire:partials.zh-icon-component :unit="$unit" :tooltip="__('stat.unit', ['unit' => $unit, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
+                            @empty
+                                </div>
+                                    <flux:text>{{ __('stat.no-units') }}</flux:text>
+                                <div>
+                            @endforelse
+                        </div>
                     </flux:accordion.content>
                 </flux:accordion.item>
                 <flux:accordion.item>
                     <flux:accordion.heading>{{ __('stat.buildings', ['spent' => $this->players->last()['buildingsBuilt_spent'], 'amount' => $this->players->last()['buildingsBuilt_amount']]) }}</flux:accordion.heading>
                     <flux:accordion.content>
-                      <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
-                        @forelse(collect($this->players->last()['buildingsBuilt'])->sortByDesc('TotalSpent') as $building => $stat)
-                            <livewire:partials.zh-icon-component :unit="$building" :tooltip="__('stat.building', ['building' => $building, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
-                        @empty
-                          {{ __('stat.no-buildings') }}
-                        @endforelse
-                      </div>
+                        <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
+                            @forelse(collect($this->players->last()['buildingsBuilt'])->sortByDesc('TotalSpent') as $building => $stat)
+                                <livewire:partials.zh-icon-component :unit="$building" :tooltip="__('stat.building', ['building' => $building, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
+                            @empty
+                                </div>
+                                    <flux:text>{{ __('stat.no-buildings') }}</flux:text>
+                                </div>
+                            @endforelse
+                        </div>
                     </flux:accordion.content>
                 </flux:accordion.item>
                 <flux:accordion.item>
                     <flux:accordion.heading>{{ __('stat.upgrades', ['spent' => $this->players->last()['upgradesBuilt_spent'], 'amount' => $this->players->last()['upgradesBuilt_amount']]) }}</flux:accordion.heading>
                     <flux:accordion.content>
-                      <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
-                        @forelse(collect($this->players->last()['upgradesBuilt'])->sortByDesc('TotalSpent') as $upgrade => $stat)
-                            <livewire:partials.zh-icon-component :unit="$upgrade" :tooltip="__('stat.upgrade', ['upgrade' => $upgrade, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
-                        @empty
-                          {{ __('stat.no-upgrades') }}
-                        @endforelse
-                      </div>
+                        <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
+                            @forelse(collect($this->players->last()['upgradesBuilt'])->sortByDesc('TotalSpent') as $upgrade => $stat)
+                                <livewire:partials.zh-icon-component :unit="$upgrade" :tooltip="__('stat.upgrade', ['upgrade' => $upgrade, 'amount' => $stat['Count'], 'spent' => $stat['TotalSpent']])" />
+                            @empty
+                                </div>
+                                    <flux:text>{{ __('stat.no-upgrades') }}</flux:text>
+                                <div>
+                            @endforelse
+                        </div>
                     </flux:accordion.content>
                 </flux:accordion.item>
                 <flux:accordion.item>
                     <flux:accordion.heading>{{ __('stat.powers', ['amount' => $this->players->last()['powersUsed_amount']]) }}</flux:accordion.heading>
                     <flux:accordion.content>
-                      <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
-                        @forelse(collect($this->players->last()['powersUsed']) as $power => $count)
-                            <livewire:partials.zh-icon-component :unit="$power" :tooltip="__('stat.power', ['power' => $power, 'amount' => $stat['Count'], ])" />
-                        @empty
-                          {{ __('stat.no-powers') }}
-                        @endforelse
-                      </div>
+                        <div class="grid xl:grid-cols-6 md:grid-cols-8 grid-cols-5 gap-2">
+                            @forelse(collect($this->players->last()['powersUsed']) as $power => $count)
+                                <livewire:partials.zh-icon-component :unit="$power" :tooltip="__('stat.power', ['power' => $power, 'amount' => $stat['Count'], ])" />
+                            @empty
+                                </div>
+                                    <flux:text>{{ __('stat.no-powers') }}</flux:text>
+                                <div>
+                            @endforelse
+                        </div>
                     </flux:accordion.content>
                 </flux:accordion.item>
             </flux:accordion>
