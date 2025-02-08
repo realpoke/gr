@@ -17,10 +17,10 @@ enum GameStatusEnum: string
     public function getStatusBadgeColor(): string
     {
         return match ($this) {
-            self::PROCESSING => 'blue',
-            self::RANKED => 'green',
-            self::UNRANKED => 'green',
-            self::INVALID => 'zinc',
+            self::PROCESSING => 'sky',
+            self::RANKED => 'lime',
+            self::UNRANKED => 'lime',
+            self::INVALID => 'rose',
             default => 'zinc'
         };
     }
