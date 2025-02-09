@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('image')->nullable();
             $table->string('icon')->default('bug-ant');
-            $table->string('color')->default('text-black');
+            $table->string('classes')->default('text-black');
             $table->json('data')->nullable();
             $table->enum('type', BadgeTypeEnum::values());
 
