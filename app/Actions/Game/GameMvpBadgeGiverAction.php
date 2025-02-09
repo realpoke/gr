@@ -14,12 +14,12 @@ class GameMvpBadgeGiverAction extends BaseAction
     {
         $players = collect($this->game->data['players']);
 
-        $mvpName = $players->firstWhere('mvp', true)['name'] ?? null;
+        $mvpName = $players->sortByDesc('countOrders')->first()['name'] ?? null;
         if (! $mvpName) {
             return $this->setFailed('No MVP player found');
         }
 
-        $mvpUser = $this->game->users()->where('name', $mvpName)->first();
+        $mvpUser = $this->game->users()->wherePivot('player_name', $mvpName)->first();
         if (! $mvpUser) {
             return $this->setFailed('User '.$mvpName.' not found');
         }

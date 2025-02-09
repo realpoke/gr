@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Pivots\GameUserPivot;
+use App\Traits\HasBadges;
 use App\Traits\HasStats;
 use App\Traits\Rules\ClaimRules;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -17,7 +18,7 @@ use Laravel\Paddle\Billable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use Billable, ClaimRules, HasFactory, HasStats, Notifiable;
+    use Billable, ClaimRules, HasBadges, HasFactory, HasStats, Notifiable;
 
     /**
      * The attributes that are mass assignable.

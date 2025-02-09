@@ -51,14 +51,14 @@ trait HasBadges
         if ($this->hasBadge($badge)) {
             return $this->badges()
                 ->where('badge_id', $badge->id)
-                ->setTypeData($this->setupDate($badge))
+                ->setTypeData($this->setupBadgeData($badge))
                 ->save();
         }
 
         return (new BadgeUserPivot([
             'user_id' => $this->id,
             'badge_id' => $badge->id,
-        ]))->setTypeData($this->setupDate($badge))->save();
+        ]))->setTypeData($this->setupBadgeData($badge))->save();
     }
 
     public function removeBadge(Badge $badge): bool
@@ -87,7 +87,7 @@ trait HasBadges
         return $this->badgePermissions()->contains($permission);
     }
 
-    private function setupData(Badge $badge): ?array
+    private function setupBadgeData(Badge $badge): ?array
     {
         $foundBadge = $this->badges()->find($badge->id);
         if (is_null($foundBadge)) {
