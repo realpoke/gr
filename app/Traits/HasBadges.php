@@ -7,6 +7,7 @@ use App\Models\Badge;
 use App\Models\Pivots\BadgeUserPivot;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 trait HasBadges
@@ -58,7 +59,7 @@ trait HasBadges
         return (new BadgeUserPivot([
             'user_id' => $this->id,
             'badge_id' => $badge->id,
-        ]))->setTypeData($this->setupBadgeData($badge))->save();
+        ]))->setTypeData($this->setupBadgeData($badge), $badge->type)->save();
     }
 
     public function removeBadge(Badge $badge): bool
@@ -87,7 +88,7 @@ trait HasBadges
         return $this->badgePermissions()->contains($permission);
     }
 
-    private function setupBadgeData(Badge $badge): ?array
+    private function setupBadgeData(Badge $badge): null|array|Carbon|int|bool
     {
         $foundBadge = $this->badges()->find($badge->id);
         if (is_null($foundBadge)) {
