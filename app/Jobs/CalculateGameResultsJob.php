@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Actions\Game\GameMvpBadgeGiverAction;
 use App\Actions\Game\SetGameAverageEloAction;
 use App\Actions\Game\SetGamePivotWinnerAction;
 use App\Actions\Game\SetGameRankedAction;
@@ -40,6 +41,15 @@ class CalculateGameResultsJob implements ShouldQueue
     public function handle(): void
     {
         $game = Game::findOrFail($this->gameId);
+
+        $mvpGiver = new GameMvpBadgeGiverAction($game);
+        $mvpGiver->handle();
+
+        if ($mvpGiver->failed()) {
+            $this->job->fail($mvpGiver->getErrorMessage());
+
+            return;
+        }
 
         $rankedSetter = new SetGameRankedAction($game);
         $rankedSetter->handle();
